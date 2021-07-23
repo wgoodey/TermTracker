@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Term Tracker</string>
+    <string name="status">Status:</string>
+    <string name="start_date">Start Date:</string>
+    <string name="end_date">End Date:</string>
+    <string name="instructor">Instructor</string>
+    <string name="assessments">Assessments</string>
+    <string name="note">Note</string>
+    <string name="name">Name:</string>
+    <string name="email">Email:</string>
+    <string name="phone">Phone:</string>
+    <string name="add_assessment">Add assessment</string>
+    <string name="term_tracker">Term Tracker</string>
+    <string name="my_terms">My Terms</string>
+    <string name="add_new_term">Add New Term</string>
+    <string name="title">Title:</string>
+    <string name="add_term">Add Term</string>
+    <string name="new_term">New Term</string>
+    <string name="add_new_course">Add New Course</string>
+    <string name="course_list">Course List</string>
+    <string name="add_new_assessment">Add New Assessment</string>
+    <string name="assessment_details">Assessment Details</string>
+    <string name="course_details">Course Details</string>
+</resources>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="15dp"
+    android:paddingVertical="15dp"
+    tools:context=".UI.CourseDetails">
+
+    <TextView
+        android:id="@+id/termTitleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="28sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Course Title" />
+
+    <TextView
+        android:id="@+id/statusLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="@string/status"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/termTitleLabel"
+        app:layout_constraintTop_toBottomOf="@+id/termTitleLabel" />
+
+    <TextView
+        android:id="@+id/startDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_date"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/statusLabel"
+        app:layout_constraintTop_toBottomOf="@+id/statusLabel" />
+
+    <TextView
+        android:id="@+id/textStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/textStartDate"
+        app:layout_constraintBottom_toBottomOf="@+id/statusLabel"
+        app:layout_constraintTop_toTopOf="@+id/statusLabel"
+        tools:text="Status" />
+
+    <TextView
+        android:id="@+id/textStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/startDateLabel"
+        app:layout_constraintTop_toTopOf="@+id/startDateLabel"
+        app:layout_constraintBottom_toBottomOf="@+id/startDateLabel"
+        tools:text="12/02/2021" />
+
+    <TextView
+        android:id="@+id/textEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/textStartDate"
+        app:layout_constraintTop_toTopOf="@+id/endDateLabel"
+        app:layout_constraintBottom_toBottomOf="@+id/endDateLabel"
+        tools:text="12/02/2021" />
+
+    <TextView
+        android:id="@+id/textName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/name"
+        app:layout_constraintStart_toEndOf="@+id/phone"
+        app:layout_constraintTop_toTopOf="@+id/name"
+        tools:text="Bob Vila" />
+
+    <TextView
+        android:id="@+id/textEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/email"
+        app:layout_constraintStart_toStartOf="@+id/textName"
+        app:layout_constraintTop_toTopOf="@+id/email"
+        tools:text="bob@vila.com" />
+
+    <TextView
+        android:id="@+id/textPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/phone"
+        app:layout_constraintStart_toStartOf="@+id/textName"
+        app:layout_constraintTop_toTopOf="@+id/phone"
+        tools:text="123-456-7890" />
+
+    <TextView
+        android:id="@+id/endDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/end_date"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/startDateLabel"
+        app:layout_constraintTop_toBottomOf="@+id/startDateLabel" />
+
+    <TextView
+        android:id="@+id/instructorLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/instructor"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="@+id/termTitleLabel"
+        app:layout_constraintTop_toBottomOf="@+id/endDateLabel" />
+
+    <TextView
+        android:id="@+id/assessmentsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/assessments"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="@+id/termTitleLabel"
+        app:layout_constraintTop_toBottomOf="@+id/textNote" />
+
+    <TextView
+        android:id="@+id/noteLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/note"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="@+id/termTitleLabel"
+        app:layout_constraintTop_toBottomOf="@+id/phone" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="@string/name"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/instructorLabel"
+        app:layout_constraintTop_toBottomOf="@+id/instructorLabel" />
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/email"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/name"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <TextView
+        android:id="@+id/phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/phone"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/email"
+        app:layout_constraintTop_toBottomOf="@+id/email" />
+
+    <TextView
+        android:id="@+id/textNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/noteLabel"
+        app:layout_constraintTop_toBottomOf="@+id/noteLabel"
+        tools:text="Note text goes here." />
+
+    <ImageView
+        android:id="@+id/addImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:contentDescription="@string/add_assessment"
+        app:layout_constraintBottom_toBottomOf="@+id/assessmentsLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/assessmentsLabel"
+        app:srcCompat="@drawable/ic_add" />
+
+    <FrameLayout
+        android:id="@+id/assessmentListHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assessmentsLabel">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/assessmentsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="235dp" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

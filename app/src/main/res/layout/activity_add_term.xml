@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.AddTerm">
+
+
+    <TextView
+        android:id="@+id/titleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:paddingVertical="5dp"
+        android:text="@string/title"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/titleEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:paddingVertical="5dp"
+        android:hint="@string/new_term"
+        app:layout_constraintBottom_toBottomOf="@+id/titleLabel"
+        app:layout_constraintStart_toStartOf="@+id/startDateEditText"
+        app:layout_constraintTop_toTopOf="@+id/titleLabel" />
+
+    <TextView
+        android:id="@+id/startDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="5dp"
+        android:text="@string/start_date"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/titleLabel"
+        app:layout_constraintTop_toBottomOf="@+id/titleLabel" />
+
+    <EditText
+        android:id="@+id/startDateEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="5"
+        android:inputType="date"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/startDateLabel"
+        app:layout_constraintStart_toEndOf="@+id/startDateLabel"
+        app:layout_constraintTop_toTopOf="@+id/startDateLabel" />
+
+    <TextView
+        android:id="@+id/endDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="5dp"
+        android:text="@string/end_date"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/startDateLabel"
+        app:layout_constraintTop_toBottomOf="@+id/startDateLabel" />
+
+    <EditText
+        android:id="@+id/endDateEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="5"
+        android:inputType="date"
+        android:paddingVertical="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/endDateLabel"
+        app:layout_constraintStart_toStartOf="@+id/startDateEditText"
+        app:layout_constraintTop_toBottomOf="@+id/startDateLabel" />
+
+    <ImageView
+        android:id="@+id/cal_icon1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="showDatePicker"
+        app:layout_constraintBottom_toBottomOf="@+id/startDateEditText"
+        app:layout_constraintStart_toEndOf="@+id/startDateEditText"
+        app:layout_constraintTop_toTopOf="@+id/startDateEditText"
+        app:srcCompat="@drawable/ic_date" />
+
+    <ImageView
+        android:id="@+id/cal_icon2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="showDatePicker"
+        app:layout_constraintBottom_toBottomOf="@+id/endDateEditText"
+        app:layout_constraintStart_toEndOf="@+id/endDateEditText"
+        app:layout_constraintTop_toBottomOf="@+id/startDateEditText"
+        app:srcCompat="@drawable/ic_date" />
+
+    <Button
+        android:id="@+id/saveTermButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/add_term"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/endDateEditText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
