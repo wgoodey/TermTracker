@@ -24,7 +24,7 @@
             android:name=".UI.AddTerm"
             android:label="@string/add_new_term" />
         <activity
-            android:name=".UI.CourseList"
+            android:name=".UI.TermDetails"
             android:label="@string/course_list" />
         <activity
             android:name=".UI.AddCourse"

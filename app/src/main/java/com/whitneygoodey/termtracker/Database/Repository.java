@@ -2,9 +2,9 @@ package com.whitneygoodey.termtracker.Database;
 
 import android.app.Application;
 
-import com.whitneygoodey.termtracker.DAO.AssessmentDAO;
-import com.whitneygoodey.termtracker.DAO.CourseDAO;
-import com.whitneygoodey.termtracker.DAO.TermDAO;
+import com.whitneygoodey.termtracker.DAO.AssessmentDao;
+import com.whitneygoodey.termtracker.DAO.CourseDao;
+import com.whitneygoodey.termtracker.DAO.TermDao;
 import com.whitneygoodey.termtracker.Entities.Assessment;
 import com.whitneygoodey.termtracker.Entities.Course;
 import com.whitneygoodey.termtracker.Entities.Term;
@@ -14,22 +14,22 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Repository {
-    private TermDAO termDAO;
-    private CourseDAO courseDAO;
-    private AssessmentDAO assessmentDAO;
+    private TermDao termDao;
+    private CourseDao courseDao;
+    private AssessmentDao assessmentDao;
     private List<Term> allTerms;
     private static final int THREADCOUNT = 4 ;
     static final ExecutorService databaseExecutor = Executors.newFixedThreadPool(THREADCOUNT);
 
     public Repository(Application application) {
         DbBuilder db = DbBuilder.getDatabase(application);
-        termDAO = db.termDAO();
-        courseDAO = db.courseDAO();
-        assessmentDAO = db.assessmentDAO();
+        termDao = db.termDao();
+        courseDao = db.courseDao();
+        assessmentDao = db.assessmentDao();
     }
 
     public List<Term> getAllTerms() {
-        databaseExecutor.execute( () -> allTerms = termDAO.getAllTerms());
+        databaseExecutor.execute( () -> allTerms = termDao.getAllTerms());
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -39,7 +39,7 @@ public class Repository {
     }
 
     public void insert(Term term) {
-        databaseExecutor.execute(() -> termDAO.insert(term));
+        databaseExecutor.execute(() -> termDao.insert(term));
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -48,7 +48,7 @@ public class Repository {
     }
 
     public void insert(Course course) {
-        databaseExecutor.execute( () -> courseDAO.insert(course));
+        databaseExecutor.execute( () -> courseDao.insert(course));
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -57,7 +57,7 @@ public class Repository {
     }
 
     public void insert(Assessment assessment) {
-        databaseExecutor.execute( () -> assessmentDAO.insert(assessment));
+        databaseExecutor.execute( () -> assessmentDao.insert(assessment));
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -65,7 +65,7 @@ public class Repository {
         }
     }
     public void delete(Term term) {
-        databaseExecutor.execute( () -> termDAO.delete(term));
+        databaseExecutor.execute( () -> termDao.delete(term));
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -74,7 +74,7 @@ public class Repository {
     }
 
     public void update(Term term) {
-        databaseExecutor.execute( () -> termDAO.update(term));
+        databaseExecutor.execute( () -> termDao.update(term));
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {

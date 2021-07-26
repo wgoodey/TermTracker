@@ -1,10 +1,13 @@
 package com.whitneygoodey.termtracker.Entities;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "term_table")
 public class Term {
+
+    //TODO: experiment with using LocalDates and format with .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)
 
     @PrimaryKey(autoGenerate = true)
     private int ID;
@@ -12,8 +15,16 @@ public class Term {
     private String startDate;
     private String endDate;
 
+    @Ignore
     public Term(int ID, String title, String startDate, String endDate) {
         this.ID = ID;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+
+    public Term(String title, String startDate, String endDate) {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;

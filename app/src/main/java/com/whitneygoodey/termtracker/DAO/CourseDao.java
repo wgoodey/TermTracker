@@ -12,7 +12,7 @@ import com.whitneygoodey.termtracker.Entities.Course;
 import java.util.List;
 
 @Dao
-public interface CourseDAO {
+public interface CourseDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Course course);

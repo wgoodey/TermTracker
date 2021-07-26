@@ -6,9 +6,9 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.whitneygoodey.termtracker.DAO.AssessmentDAO;
-import com.whitneygoodey.termtracker.DAO.CourseDAO;
-import com.whitneygoodey.termtracker.DAO.TermDAO;
+import com.whitneygoodey.termtracker.DAO.AssessmentDao;
+import com.whitneygoodey.termtracker.DAO.CourseDao;
+import com.whitneygoodey.termtracker.DAO.TermDao;
 import com.whitneygoodey.termtracker.Entities.Assessment;
 import com.whitneygoodey.termtracker.Entities.Course;
 import com.whitneygoodey.termtracker.Entities.Term;
@@ -17,9 +17,9 @@ import com.whitneygoodey.termtracker.Entities.Term;
         entities = {Term.class, Course.class, Assessment.class}, version = 1, exportSchema = false)
 public abstract class DbBuilder extends RoomDatabase {
 
-    public abstract TermDAO termDAO();
-    public abstract CourseDAO courseDAO();
-    public abstract AssessmentDAO assessmentDAO();
+    public abstract TermDao termDao();
+    public abstract CourseDao courseDao();
+    public abstract AssessmentDao assessmentDao();
 
     private static volatile DbBuilder INSTANCE;
 

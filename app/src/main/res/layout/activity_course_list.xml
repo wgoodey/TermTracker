@@ -4,17 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.CourseList">
+    tools:context=".UI.TermDetails">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/termRecyclerView"
+        android:id="@+id/courseRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"

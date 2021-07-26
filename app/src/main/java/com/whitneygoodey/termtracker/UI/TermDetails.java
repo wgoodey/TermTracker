@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.whitneygoodey.termtracker.R;
 
-public class CourseList extends AppCompatActivity {
+public class TermDetails extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +31,12 @@ public class CourseList extends AppCompatActivity {
     }
 
     public void addCourse(View view) {
-        Intent intent = new Intent(CourseList.this, AddCourse.class);
+        Intent intent = new Intent(TermDetails.this, AddCourse.class);
         startActivity(intent);
     }
 
     public void showAssessmentDetails(View view) {
-        Intent intent = new Intent(CourseList.this, AssessmentDetails.class);
+        Intent intent = new Intent(TermDetails.this, AssessmentDetails.class);
         startActivity(intent);
     }
 }
