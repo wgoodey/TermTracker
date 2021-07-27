@@ -1,6 +1,7 @@
 package com.whitneygoodey.termtracker.Entities;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "course_table")
@@ -37,9 +38,21 @@ public class Course {
         }
     }
 
-
+    @Ignore
     public Course(int ID, int term, String title, Status status, String startDate, String endDate, String instructorName, String instructorEmail, String instructorPhone, String note) {
         this.ID = ID;
+        this.term = term;
+        this.title = title;
+        this.status = status;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.instructorName = instructorName;
+        this.instructorEmail = instructorEmail;
+        this.instructorPhone = instructorPhone;
+        this.note = note;
+    }
+
+    public Course(int term, String title, Status status, String startDate, String endDate, String instructorName, String instructorEmail, String instructorPhone, String note) {
         this.term = term;
         this.title = title;
         this.status = status;

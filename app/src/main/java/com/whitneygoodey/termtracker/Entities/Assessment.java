@@ -1,6 +1,7 @@
 package com.whitneygoodey.termtracker.Entities;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "assessment_table")
@@ -30,8 +31,17 @@ public class Assessment {
         }
     }
 
+    @Ignore
     public Assessment(int ID, int courseID, String title, String startDate, String endDate, Type type) {
         this.ID = ID;
+        this.courseID = courseID;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.type = type;
+    }
+
+    public Assessment(int courseID, String title, String startDate, String endDate, Type type) {
         this.courseID = courseID;
         this.title = title;
         this.startDate = startDate;

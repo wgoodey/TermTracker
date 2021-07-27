@@ -18,6 +18,8 @@ public class Repository {
     private CourseDao courseDao;
     private AssessmentDao assessmentDao;
     private List<Term> allTerms;
+    private List<Course> allCourses;
+    private List<Assessment> allAssessments;
     private static final int THREADCOUNT = 4 ;
     static final ExecutorService databaseExecutor = Executors.newFixedThreadPool(THREADCOUNT);
 
@@ -36,6 +38,26 @@ public class Repository {
             e.printStackTrace();
         }
         return allTerms;
+    }
+
+    public List<Course> getAllCourses() {
+        databaseExecutor.execute( () -> allCourses = courseDao.getAllCourses());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return allCourses;
+    }
+
+    public List<Assessment> getAllAssessments() {
+        databaseExecutor.execute( () -> allAssessments = assessmentDao.getAllAssessments());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return allAssessments;
     }
 
     public void insert(Term term) {
