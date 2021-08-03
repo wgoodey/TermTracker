@@ -19,6 +19,7 @@ import java.util.Objects;
 public class TermList extends AppCompatActivity {
 
     private Repository repository;
+    int termID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,17 +50,13 @@ public class TermList extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void showTermDetails(View view) {
-        Intent intent = new Intent(TermList.this, TermDetails.class);
-        startActivity(intent);
-    }
-
     public void addTerm(View view) {
         Intent intent = new Intent(TermList.this, AddTerm.class);
         startActivity(intent);
     }
     public void editTerm(View view) {
         Intent intent = new Intent(TermList.this, AddTerm.class);
+        intent.putExtra("termID", termID);
         startActivity(intent);
     }
 }

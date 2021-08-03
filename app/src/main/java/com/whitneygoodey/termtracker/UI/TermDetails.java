@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,25 +22,35 @@ public class TermDetails extends AppCompatActivity {
 
     private Repository repository;
     private int termID;
+    private int courseID;
     private Term term;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_course_list);
+        setContentView(R.layout.activity_term_details);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        //get courses from the database
+        try {
+            termID = getIntent().getIntExtra("termID", -1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //get term and courses from the database
         repository = new Repository(getApplication());
+        term = repository.getTerm(termID);
+        List<Course> courseList = repository.getTermCourses(termID);
 
-        //get termID and make a term
-        termID = getIntent().getIntExtra("id", -1);
-        //TODO: get term and display details on screen
-
-        //TODO: filter list to match term
-        List<Course> courseList = repository.getAllCourses();
+        //set term details on screen
+        TextView title = findViewById(R.id.termTitle);
+        TextView start = findViewById(R.id.textStartDate);
+        TextView end = findViewById(R.id.textEndDate);
+        title.setText(term.getTitle());
+        start.setText(term.getStartDate());
+        end.setText(term.getEndDate());
 
         //set RecyclerView and CourseAdapter
         RecyclerView recyclerView = findViewById(R.id.courseRecyclerView);
@@ -61,6 +72,13 @@ public class TermDetails extends AppCompatActivity {
 
     public void addCourse(View view) {
         Intent intent = new Intent(TermDetails.this, AddCourse.class);
+        intent.putExtra("termID", termID);
+        startActivity(intent);
+    }
+
+    public void editCourse(View view) {
+        Intent intent = new Intent(TermDetails.this, AddCourse.class);
+        intent.putExtra("courseID", courseID);
         startActivity(intent);
     }
 

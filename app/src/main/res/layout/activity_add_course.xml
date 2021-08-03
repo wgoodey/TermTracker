@@ -4,6 +4,224 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     tools:context=".UI.AddCourse">
+
+    <EditText
+        android:id="@+id/editCourseTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="New Course"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/statusLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/status"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/editCourseTitle"
+        app:layout_constraintTop_toBottomOf="@+id/editCourseTitle" />
+
+
+    <Spinner
+        android:id="@+id/statusSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/statusLabel"
+        app:layout_constraintStart_toStartOf="@+id/editStartDate"
+        app:layout_constraintTop_toTopOf="@+id/statusLabel"
+        tools:text="Status" />
+
+    <TextView
+        android:id="@+id/startDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/start_date"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/statusLabel"
+        app:layout_constraintTop_toBottomOf="@+id/statusLabel" />
+
+    <EditText
+        android:id="@+id/editStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:importantForAccessibility="yes"
+        android:importantForAutofill="no"
+        android:inputType="date"
+        android:minHeight="48dp"
+        android:minEms="6"
+        android:paddingHorizontal="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/startDateLabel"
+        app:layout_constraintStart_toEndOf="@+id/startDateLabel"
+        app:layout_constraintTop_toTopOf="@+id/startDateLabel" />
+
+    <TextView
+        android:id="@+id/endDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/end_date"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/startDateLabel"
+        app:layout_constraintTop_toBottomOf="@+id/startDateLabel" />
+
+    <EditText
+        android:id="@+id/editEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:importantForAccessibility="yes"
+        android:importantForAutofill="no"
+        android:inputType="date"
+        android:minHeight="48dp"
+        android:minEms="6"
+        android:paddingVertical="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/endDateLabel"
+        app:layout_constraintStart_toStartOf="@+id/editStartDate"
+        app:layout_constraintTop_toTopOf="@+id/endDateLabel" />
+
+
+    <ImageView
+        android:id="@+id/cal_icon1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="35dp"
+        android:minHeight="35dp"
+        android:onClick="showDatePicker"
+        app:layout_constraintBottom_toBottomOf="@+id/editStartDate"
+        app:layout_constraintStart_toEndOf="@+id/editStartDate"
+        app:layout_constraintTop_toTopOf="@+id/editStartDate"
+        app:srcCompat="@drawable/ic_date" />
+
+    <ImageView
+        android:id="@+id/cal_icon2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="35dp"
+        android:minHeight="35dp"
+        android:onClick="showDatePicker"
+        app:layout_constraintBottom_toBottomOf="@+id/editEndDate"
+        app:layout_constraintStart_toEndOf="@+id/editEndDate"
+        app:layout_constraintTop_toBottomOf="@+id/editStartDate"
+        app:srcCompat="@drawable/ic_date" />
+
+    <EditText
+        android:id="@+id/editName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:maxEms="15"
+        android:minHeight="48dp"
+        android:minEms="8"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/name"
+        app:layout_constraintStart_toEndOf="@+id/phone"
+        app:layout_constraintTop_toTopOf="@+id/name" />
+
+    <EditText
+        android:id="@+id/editEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:maxEms="15"
+        android:minHeight="48dp"
+        android:minEms="8"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/email"
+        app:layout_constraintStart_toStartOf="@+id/editName"
+        app:layout_constraintTop_toTopOf="@+id/email" />
+
+    <EditText
+        android:id="@+id/editPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:maxEms="15"
+        android:minHeight="48dp"
+        android:minEms="8"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/phone"
+        app:layout_constraintStart_toStartOf="@+id/editName"
+        app:layout_constraintTop_toTopOf="@+id/phone" />
+
+    <TextView
+        android:id="@+id/instructorLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/instructor"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/editCourseTitle"
+        app:layout_constraintTop_toBottomOf="@+id/endDateLabel" />
+
+    <TextView
+        android:id="@+id/noteLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/note"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/editCourseTitle"
+        app:layout_constraintTop_toBottomOf="@+id/phone" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/name"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/instructorLabel"
+        app:layout_constraintTop_toBottomOf="@+id/instructorLabel" />
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/email"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/name"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <TextView
+        android:id="@+id/phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/phone"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/email"
+        app:layout_constraintTop_toBottomOf="@+id/email" />
+
+    <EditText
+        android:id="@+id/editNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:hint="@string/course_note"
+        android:minHeight="48dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/noteLabel"
+        app:layout_constraintTop_toBottomOf="@+id/noteLabel" />
+
+    <Button
+        android:id="@+id/saveCourseButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="saveCourse"
+        android:text="@string/add_course"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editNote" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

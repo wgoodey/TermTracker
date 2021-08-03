@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 public class Course {
     @PrimaryKey(autoGenerate = true)
     private int ID;
-    private int term;
+    private int termID;
     private String title;
     private Status status;
     private String startDate;
@@ -20,9 +20,9 @@ public class Course {
     private String note;
 
     public enum Status {
+        PLANNED("Planned"),
         ENROLLED("Enrolled"),
         PROGRESS("In Progress"),
-        PLANNED("Planned"),
         COMPLETED("Completed"),
         DROPPED("Dropped");
 
@@ -39,9 +39,9 @@ public class Course {
     }
 
     @Ignore
-    public Course(int ID, int term, String title, Status status, String startDate, String endDate, String instructorName, String instructorEmail, String instructorPhone, String note) {
+    public Course(int ID, int termID, String title, Status status, String startDate, String endDate, String instructorName, String instructorEmail, String instructorPhone, String note) {
         this.ID = ID;
-        this.term = term;
+        this.termID = termID;
         this.title = title;
         this.status = status;
         this.startDate = startDate;
@@ -52,8 +52,8 @@ public class Course {
         this.note = note;
     }
 
-    public Course(int term, String title, Status status, String startDate, String endDate, String instructorName, String instructorEmail, String instructorPhone, String note) {
-        this.term = term;
+    public Course(int termID, String title, Status status, String startDate, String endDate, String instructorName, String instructorEmail, String instructorPhone, String note) {
+        this.termID = termID;
         this.title = title;
         this.status = status;
         this.startDate = startDate;
@@ -87,12 +87,12 @@ public class Course {
         this.ID = ID;
     }
 
-    public int getTerm() {
-        return term;
+    public int getTermID() {
+        return termID;
     }
 
-    public void setTerm(int term) {
-        this.term = term;
+    public void setTermID(int termID) {
+        this.termID = termID;
     }
 
     public String getTitle() {

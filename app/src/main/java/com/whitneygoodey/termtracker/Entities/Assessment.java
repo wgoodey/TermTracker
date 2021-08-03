@@ -13,6 +13,7 @@ public class Assessment {
     private String title;
     private String startDate;
     private String endDate;
+    private String description;
     private Type type;
 
     public enum Type {
@@ -32,20 +33,22 @@ public class Assessment {
     }
 
     @Ignore
-    public Assessment(int ID, int courseID, String title, String startDate, String endDate, Type type) {
+    public Assessment(int ID, int courseID, String title, String startDate, String endDate, String description, Type type) {
         this.ID = ID;
         this.courseID = courseID;
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.description = description;
         this.type = type;
     }
 
-    public Assessment(int courseID, String title, String startDate, String endDate, Type type) {
+    public Assessment(int courseID, String title, String startDate, String endDate, String description, Type type) {
         this.courseID = courseID;
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.description = description;
         this.type = type;
     }
 
@@ -56,6 +59,7 @@ public class Assessment {
                 "Title='" + title + '\'' +
                 "Start Date='" + startDate + '\'' +
                 "End Date='" + endDate + '\'' +
+                "Description='" + description + '\'' +
                 "type='" + type + '\'' +
                 '}';
     }
@@ -98,6 +102,14 @@ public class Assessment {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Type getType() {

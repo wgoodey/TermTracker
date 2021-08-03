@@ -22,13 +22,11 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
 
     class AssessmentViewHolder extends RecyclerView.ViewHolder {
         private TextView assessmentTitle;
-        private TextView type;
         private TextView startAndEndDates;
 
         private AssessmentViewHolder(View itemView) {
             super(itemView);
             assessmentTitle = itemView.findViewById(R.id.assessmentListTitleLabel);
-            type = itemView.findViewById(R.id.assessmentListTypeLabel);
             startAndEndDates = itemView.findViewById(R.id.assessmentListStartAndEndDates);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -37,7 +35,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
                     final Assessment current = assessmentList.get(position);
 
                     Intent intent = new Intent(context, AssessmentDetails.class);
-                    intent.putExtra("id", current.getID());
+                    intent.putExtra("assessmentID", current.getID());
                     context.startActivity(intent);
                 }
             });
@@ -59,13 +57,21 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
     public void onBindViewHolder(AssessmentAdapter.AssessmentViewHolder holder, int position) {
         if (assessmentList != null) {
             Assessment current = assessmentList.get(position);
-            holder.assessmentTitle.setText(current.getTitle());
-            holder.type.setText(current.getType().toString());
+            String title = current.getTitle();
+            String type;
+            if (current.getType() == Assessment.Type.OBJECTIVE) {
+                type = ("(OA)");
+            } else {
+                type = ("(PA)");
+            }
+
+            //set text in ViewHolder
+            holder.assessmentTitle.setText(context.getString(R.string.assessment_list_title, title, type));
             String dates = context.getString(R.string.start_and_end_dates, current.getStartDate(), current.getEndDate());
             holder.startAndEndDates.setText(dates);
+
         } else {
             holder.assessmentTitle.setText("No assessment title.");
-            holder.type.setText("No type specified.");
             holder.startAndEndDates.setText("No start or end dates specified.");
         }
     }

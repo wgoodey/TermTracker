@@ -16,6 +16,7 @@ import java.util.Objects;
 public class AddTerm extends AppCompatActivity {
 
     int id = -1;
+    Term term;
     EditText titleEdit;
     EditText startEdit;
     EditText endEdit;
@@ -33,8 +34,8 @@ public class AddTerm extends AppCompatActivity {
 
 
         titleEdit = findViewById(R.id.titleEditText);
-        startEdit = findViewById(R.id.startDateEditText);
-        endEdit = findViewById(R.id.endDateEditText);
+        startEdit = findViewById(R.id.editStartDate);
+        endEdit = findViewById(R.id.editEndDate);
 
         try {
             id = getIntent().getIntExtra("id", -1);
@@ -42,6 +43,14 @@ public class AddTerm extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //if editing term, get details and fill them in on the screen.
+        if (id != -1) {
+            term = repository.getTerm(id);
+
+            titleEdit.setText(term.getTitle());
+            startEdit.setText(term.getStartDate());
+            endEdit.setText(term.getEndDate());
+        }
 
     }
 
@@ -62,11 +71,11 @@ public class AddTerm extends AppCompatActivity {
         String endDate = endEdit.getText().toString();
 
         if (id == -1) {
-            Term newTerm = new Term(title, startDate, endDate);
-            repository.insert(newTerm);
+            term = new Term(title, startDate, endDate);
+            repository.insert(term);
         } else {
-            Term oldTerm = new Term(id, title, startDate, endDate);
-            repository.update(oldTerm);
+            term = new Term(id, title, startDate, endDate);
+            repository.update(term);
         }
         //TODO: figure out how to update termRecycleView automatically
         finish();

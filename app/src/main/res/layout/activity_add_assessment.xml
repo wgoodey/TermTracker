@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
-        android:paddingVertical="5dp"
         android:text="@string/title"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -25,17 +24,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="@string/new_assessment"
+        android:importantForAccessibility="yes"
         android:inputType="text"
-        android:paddingVertical="5dp"
-        android:hint="@string/new_term"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="@+id/titleLabel"
-        app:layout_constraintStart_toStartOf="@+id/startDateEditText"
-        app:layout_constraintTop_toTopOf="@+id/titleLabel" />
+        app:layout_constraintStart_toStartOf="@+id/editStartDate"
+        app:layout_constraintTop_toTopOf="@+id/titleLabel"
+        android:importantForAutofill="no" />
 
     <TextView
         android:id="@+id/startDateLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:paddingVertical="5dp"
         android:text="@string/start_date"
         android:textSize="18sp"
@@ -44,13 +46,15 @@
         app:layout_constraintTop_toBottomOf="@+id/titleLabel" />
 
     <EditText
-        android:id="@+id/startDateEditText"
+        android:id="@+id/editStartDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="5"
+        android:importantForAccessibility="yes"
+        android:importantForAutofill="no"
         android:inputType="date"
+        android:minHeight="48dp"
+        android:minEms="6"
         android:paddingHorizontal="5dp"
-        android:paddingVertical="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/startDateLabel"
         app:layout_constraintStart_toEndOf="@+id/startDateLabel"
         app:layout_constraintTop_toTopOf="@+id/startDateLabel" />
@@ -59,7 +63,7 @@
         android:id="@+id/endDateLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingVertical="5dp"
+        android:layout_marginTop="15dp"
         android:text="@string/end_date"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -67,44 +71,111 @@
         app:layout_constraintTop_toBottomOf="@+id/startDateLabel" />
 
     <EditText
-        android:id="@+id/endDateEditText"
+        android:id="@+id/editEndDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="5"
+        android:ems="6"
+        android:importantForAccessibility="yes"
+        android:importantForAutofill="no"
         android:inputType="date"
+        android:minHeight="48dp"
+        android:minEms="6"
         android:paddingVertical="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/endDateLabel"
-        app:layout_constraintStart_toStartOf="@+id/startDateEditText"
-        app:layout_constraintTop_toBottomOf="@+id/startDateLabel" />
+        app:layout_constraintStart_toStartOf="@+id/editStartDate"
+        app:layout_constraintTop_toTopOf="@+id/endDateLabel" />
 
     <ImageView
         android:id="@+id/cal_icon1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:minWidth="35dp"
+        android:minHeight="35dp"
         android:onClick="showDatePicker"
-        app:layout_constraintBottom_toBottomOf="@+id/startDateEditText"
-        app:layout_constraintStart_toEndOf="@+id/startDateEditText"
-        app:layout_constraintTop_toTopOf="@+id/startDateEditText"
+        app:layout_constraintBottom_toBottomOf="@+id/editStartDate"
+        app:layout_constraintStart_toEndOf="@+id/editStartDate"
+        app:layout_constraintTop_toTopOf="@+id/editStartDate"
         app:srcCompat="@drawable/ic_date" />
 
     <ImageView
         android:id="@+id/cal_icon2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:minWidth="35dp"
+        android:minHeight="35dp"
         android:onClick="showDatePicker"
-        app:layout_constraintBottom_toBottomOf="@+id/endDateEditText"
-        app:layout_constraintStart_toEndOf="@+id/endDateEditText"
-        app:layout_constraintTop_toBottomOf="@+id/startDateEditText"
+        app:layout_constraintBottom_toBottomOf="@+id/editEndDate"
+        app:layout_constraintStart_toEndOf="@+id/editEndDate"
+        app:layout_constraintTop_toBottomOf="@+id/editStartDate"
         app:srcCompat="@drawable/ic_date" />
+
+    <TextView
+        android:id="@+id/typeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:paddingVertical="5dp"
+        android:text="@string/type"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/endDateLabel"
+        app:layout_constraintTop_toBottomOf="@id/endDateLabel" />
+
+    <RadioGroup
+        android:id="@+id/typeRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/editStartDate"
+        app:layout_constraintTop_toTopOf="@+id/typeLabel" >
+
+        <RadioButton
+            android:id="@+id/objectiveRadio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/objective_assessment" />
+
+        <RadioButton
+            android:id="@+id/performanceRadio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/performance_assessment" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/descriptionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/description"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/typeRadioGroup" />
 
     <Button
         android:id="@+id/saveTermButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="@string/add_term"
+        android:text="@string/add_assessment"
+        android:onClick="saveAssessment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/endDateEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/editDescription" />
+
+    <EditText
+        android:id="@+id/editDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:importantForAccessibility="yes"
+        android:inputType="textMultiLine"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/descriptionLabel"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionLabel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

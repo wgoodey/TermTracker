@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
-    tools:context=".UI.AssessmentDetails">
+    tools:context=".UI.TermDetails">
 
     <TextView
-        android:id="@+id/assessmentTitle"
-        android:layout_width="wrap_content"
+        android:id="@+id/termTitle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -18,24 +18,14 @@
         tools:text="Course Title" />
 
     <TextView
-        android:id="@+id/assessmentType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/assessmentTitle"
-        app:layout_constraintTop_toBottomOf="@id/assessmentTitle"
-        tools:text="Objective Assessment" />
-
-    <TextView
         android:id="@+id/startDateLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start_date"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/assessmentType"
-        app:layout_constraintTop_toBottomOf="@+id/assessmentType" />
+        app:layout_constraintStart_toStartOf="@+id/termTitle"
+        app:layout_constraintTop_toBottomOf="@+id/termTitle" />
 
     <TextView
         android:id="@+id/textStartDate"
@@ -63,30 +53,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/endDateLabel"
         app:layout_constraintStart_toStartOf="@+id/textStartDate"
         app:layout_constraintTop_toTopOf="@+id/endDateLabel"
-        app:layout_constraintBottom_toBottomOf="@+id/endDateLabel"
         tools:text="12/02/2021" />
 
-    <TextView
-        android:id="@+id/descriptionLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text="Description"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/endDateLabel" />
-
-    <TextView
-        android:id="@+id/textDescription"
+    <FrameLayout
+        android:id="@+id/courseListHolder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionLabel"
-        tools:text="Assessment description goes here." />
+        app:layout_constraintTop_toBottomOf="@id/endDateLabel">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/courseRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"/>
+    </FrameLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:clickable="true"
+        android:onClick="addCourse"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_add" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

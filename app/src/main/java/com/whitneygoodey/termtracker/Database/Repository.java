@@ -9,6 +9,7 @@ import com.whitneygoodey.termtracker.Entities.Assessment;
 import com.whitneygoodey.termtracker.Entities.Course;
 import com.whitneygoodey.termtracker.Entities.Term;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -40,6 +41,15 @@ public class Repository {
         return allTerms;
     }
 
+    public Term getTerm(int termID) {
+        for (Term term : getAllTerms()) {
+            if (termID == term.getID()) {
+                return term;
+            }
+        }
+        return null;
+    }
+
     public List<Course> getAllCourses() {
         databaseExecutor.execute( () -> allCourses = courseDao.getAllCourses());
         try {
@@ -50,6 +60,25 @@ public class Repository {
         return allCourses;
     }
 
+    public List<Course> getTermCourses(int termID) {
+        List<Course> termCourses = new ArrayList<>();
+        for (Course course : getAllCourses()) {
+            if (termID == course.getTermID()) {
+                termCourses.add(course);
+            }
+        }
+        return termCourses;
+    }
+
+    public Course getCourse(int courseID) {
+        for (Course course : getAllCourses()) {
+            if(courseID == course.getID()) {
+                return course;
+            }
+        }
+        return null;
+    }
+
     public List<Assessment> getAllAssessments() {
         databaseExecutor.execute( () -> allAssessments = assessmentDao.getAllAssessments());
         try {
@@ -58,6 +87,25 @@ public class Repository {
             e.printStackTrace();
         }
         return allAssessments;
+    }
+
+    public List<Assessment> getCourseAssessments(int courseID) {
+        List <Assessment> courseAssessments = new ArrayList<>();
+        for (Assessment assessment : getAllAssessments()) {
+            if (courseID == assessment.getCourseID()) {
+                courseAssessments.add(assessment);
+            }
+        }
+        return courseAssessments;
+    }
+
+    public Assessment getAssessment(int assessmentID) {
+        for (Assessment assessment : getAllAssessments()) {
+            if(assessmentID == assessment.getID()) {
+                return assessment;
+            }
+        }
+        return null;
     }
 
     public void insert(Term term) {
@@ -86,8 +134,27 @@ public class Repository {
             e.printStackTrace();
         }
     }
+
     public void delete(Term term) {
         databaseExecutor.execute( () -> termDao.delete(term));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(Course course) {
+        databaseExecutor.execute( () -> courseDao.delete(course));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(Assessment assessment) {
+        databaseExecutor.execute( () -> assessmentDao.delete(assessment));
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -103,6 +170,26 @@ public class Repository {
             e.printStackTrace();
         }
     }
+
+    public void update(Course course) {
+        databaseExecutor.execute( () -> courseDao.update(course));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void update(Assessment assessment) {
+        databaseExecutor.execute( () -> assessmentDao.update(assessment));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     //TODO complete for Course and Assessment;
 }
