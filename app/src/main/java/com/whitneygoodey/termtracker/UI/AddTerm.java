@@ -38,7 +38,7 @@ public class AddTerm extends AppCompatActivity {
         endEdit = findViewById(R.id.editEndDate);
 
         try {
-            id = getIntent().getIntExtra("id", -1);
+            id = getIntent().getIntExtra("termID", -1);
         } catch (Exception e) {
             e.printStackTrace();
         }

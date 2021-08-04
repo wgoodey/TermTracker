@@ -19,25 +19,36 @@
         </activity>
         <activity
             android:name=".UI.TermList"
-            android:label="@string/my_terms" />
+            android:label="@string/my_terms"
+            android:parentActivityName=".UI.MainActivity" />
         <activity
             android:name=".UI.AddTerm"
-            android:label="@string/add_new_term" />
+            android:label="@string/add_new_term"
+            android:parentActivityName=".UI.TermDetails" />
         <activity
             android:name=".UI.TermDetails"
-            android:label="@string/course_list" />
+            android:parentActivityName=".UI.TermList" />
+
         <activity
             android:name=".UI.AddCourse"
-            android:label="@string/add_new_course" />
+            android:label="@string/add_new_course"
+            android:parentActivityName=".UI.CourseDetails" />
+
         <activity
             android:name=".UI.CourseDetails"
-            android:label="@string/course_details" />
+            android:label="@string/course_details"
+            android:parentActivityName=".UI.TermDetails" />
+
         <activity
             android:name=".UI.AssessmentDetails"
-            android:label="@string/assessment_details" />
+            android:label="@string/assessment_details"
+            android:parentActivityName=".UI.CourseDetails" />
+
         <activity
             android:name=".UI.AddAssessment"
-            android:label="@string/add_new_assessment" />
+            android:label="@string/add_new_assessment"
+            android:parentActivityName=".UI.CourseDetails" />
+
     </application>
 
 </manifest>

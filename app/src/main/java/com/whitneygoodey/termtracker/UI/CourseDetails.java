@@ -2,6 +2,8 @@ package com.whitneygoodey.termtracker.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -41,10 +43,53 @@ public class CourseDetails extends AppCompatActivity {
 
         //get course and assessments from the database
         repository = new Repository(getApplication());
-        course = repository.getCourse(courseID);
-        List<Assessment> assessmentList = repository.getCourseAssessments(courseID);
+        setCourseDetailsOnScreen();
+    }
 
-        //set course info on screen
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+
+            case R.id.refresh:
+                setCourseDetailsOnScreen();
+                return true;
+
+            case R.id.notify:
+                //TODO: add code for notifications
+                return true;
+
+            case R.id.share:
+                //TODO: add code for sharing
+                return true;
+
+            case R.id.edit:
+                editCourse(courseID);
+                return true;
+
+            case R.id.delete:
+                //TODO: add code for deleting
+                repository.delete(course);
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setCourseDetailsOnScreen() {
+        //get course from the database
+        course = repository.getCourse(courseID);
+
+        //get views
         TextView title = findViewById(R.id.editCourseTitle);
         title.setText(course.getTitle());
         TextView status = findViewById(R.id.statusSpinner);
@@ -54,6 +99,7 @@ public class CourseDetails extends AppCompatActivity {
         TextView end = findViewById(R.id.textEndDate);
         end.setText(course.getEndDate());
 
+        //set course info on screen
         TextView name = findViewById(R.id.editName);
         name.setText(course.getInstructorName());
         TextView email = findViewById(R.id.editEmail);
@@ -64,6 +110,7 @@ public class CourseDetails extends AppCompatActivity {
         note.setText(course.getNote());
 
         //set RecyclerView and AssessmentAdapter
+        List<Assessment> assessmentList = repository.getCourseAssessments(courseID);
         RecyclerView recyclerView = findViewById(R.id.assessmentsRecyclerView);
         final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this);
         recyclerView.setAdapter(assessmentAdapter);
@@ -71,15 +118,6 @@ public class CourseDetails extends AppCompatActivity {
         assessmentAdapter.setAssessmentList(assessmentList);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     public void addAssessment(View view) {
         Intent intent = new Intent(CourseDetails.this, AddAssessment.class);
@@ -87,9 +125,9 @@ public class CourseDetails extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void editAssessment(View view) {
-        Intent intent = new Intent(CourseDetails.this, AddAssessment.class);
-        intent.putExtra("assessmentID", assessmentID);
+    public void editCourse(int courseID) {
+        Intent intent = new Intent(CourseDetails.this, AddCourse.class);
+        intent.putExtra("courseID", courseID);
         startActivity(intent);
     }
 

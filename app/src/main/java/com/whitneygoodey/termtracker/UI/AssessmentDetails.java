@@ -1,6 +1,9 @@
 package com.whitneygoodey.termtracker.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -32,21 +35,34 @@ public class AssessmentDetails extends AppCompatActivity {
             e.printStackTrace();
         }
         repository = new Repository(getApplication());
+        setAssessmentDetailsOnScreen();
+
+    }
+
+    private void setAssessmentDetailsOnScreen() {
+        //get assessment from the database
         assessment = repository.getAssessment(assessmentID);
 
-        //TODO: set assessment details on screen
+        //get views
         TextView title = findViewById(R.id.assessmentTitle);
         TextView type = findViewById(R.id.assessmentType);
         TextView start = findViewById(R.id.textStartDate);
         TextView end = findViewById(R.id.textEndDate);
         TextView description = findViewById(R.id.textDescription);
 
+        //set assessment info on screen
         title.setText(assessment.getTitle());
         type.setText(assessment.getType().toString());
         start.setText(assessment.getStartDate());
         end.setText(assessment.getEndDate());
         description.setText(assessment.getDescription());
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
     }
 
     @Override
@@ -55,7 +71,37 @@ public class AssessmentDetails extends AppCompatActivity {
             case android.R.id.home:
                 this.finish();
                 return true;
+
+            case R.id.refresh:
+                setAssessmentDetailsOnScreen();
+                return true;
+
+            case R.id.notify:
+                //TODO: add code for notifications
+                return true;
+
+            case R.id.share:
+                //TODO: add code for sharing
+                return true;
+
+            case R.id.edit:
+                editAssessment(assessmentID);
+                return true;
+
+            case R.id.delete:
+                //TODO: add alert for confirmation
+                repository.delete(assessment);
+                finish();
+
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void editAssessment(int assessmentID) {
+        Intent intent = new Intent(AssessmentDetails.this, AddAssessment.class);
+        intent.putExtra("assessmentID", assessmentID);
+        startActivity(intent);
+    }
+
 }

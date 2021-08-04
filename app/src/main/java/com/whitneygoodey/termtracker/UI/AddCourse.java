@@ -72,7 +72,7 @@ public class AddCourse extends AppCompatActivity {
             phoneEdit.setText(course.getInstructorPhone());
             noteEdit.setText(course.getNote());
 
-            //set status spinner
+            //TODO: set status spinner
 
         }
     }
@@ -141,5 +141,8 @@ public class AddCourse extends AppCompatActivity {
             repository.update(course);
         }
         finish();
+//        Intent intent = new Intent(AddCourse.this, CourseDetails.class);
+//        intent.putExtra("termID", termID);
+//        startActivity(intent);
     }
 }

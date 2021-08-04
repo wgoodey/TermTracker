@@ -2,6 +2,8 @@ package com.whitneygoodey.termtracker.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -41,13 +43,35 @@ public class TermList extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.term_list_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
                 return true;
+
+            case R.id.refresh:
+                return refreshList();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean refreshList() {
+        repository = new Repository(getApplication());
+        List<Term> allTerms = repository.getAllTerms();
+        RecyclerView recyclerView = findViewById(R.id.termRecyclerView);
+
+        final TermAdapter termAdapter = new TermAdapter(this);
+        recyclerView.setAdapter(termAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        termAdapter.setTermList(allTerms);
+        return true;
     }
 
     public void addTerm(View view) {

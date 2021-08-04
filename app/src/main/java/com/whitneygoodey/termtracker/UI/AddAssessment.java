@@ -103,6 +103,10 @@ public class AddAssessment extends AppCompatActivity {
             assessment = new Assessment(id, courseID, title, startDate, endDate, description, type);
             repository.update(assessment);
         }
+
+//        Intent intent = new Intent(AddAssessment.this, CourseDetails.class);
+//        intent.putExtra("courseID", courseID);
+//        startActivity(intent);
         finish();
     }
 
