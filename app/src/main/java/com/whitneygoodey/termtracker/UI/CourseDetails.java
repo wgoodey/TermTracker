@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -77,9 +78,19 @@ public class CourseDetails extends AppCompatActivity {
                 return true;
 
             case R.id.delete:
-                //TODO: add code for deleting
+                //if course has associated assessments, delete those.
+                List<Assessment> allAssessments = repository.getAllAssessments();
+                for (Assessment assessment : allAssessments) {
+                    if (assessment.getCourseID() == courseID) {
+                        repository.delete(assessment);
+                    }
+                }
+                //delete course once its assessments are deleted
                 repository.delete(course);
-
+                String message = getApplicationContext().getString(R.string.course_deleted, course.getTitle());
+                Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+                toast.show();
+                this.finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);

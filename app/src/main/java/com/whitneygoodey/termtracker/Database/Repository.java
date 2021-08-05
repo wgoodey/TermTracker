@@ -189,7 +189,30 @@ public class Repository {
         }
     }
 
+    public void deleteAllTerms() {
+        databaseExecutor.execute( () -> termDao.deleteAllTerms());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void deleteAllCourses() {
+        databaseExecutor.execute( () -> courseDao.deleteAllCourses());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
-    //TODO complete for Course and Assessment;
+    public void deleteAllAssessments() {
+        databaseExecutor.execute( () -> assessmentDao.deleteAllAssessments());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

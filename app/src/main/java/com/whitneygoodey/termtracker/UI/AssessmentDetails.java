@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,7 +37,6 @@ public class AssessmentDetails extends AppCompatActivity {
         }
         repository = new Repository(getApplication());
         setAssessmentDetailsOnScreen();
-
     }
 
     private void setAssessmentDetailsOnScreen() {
@@ -89,10 +89,12 @@ public class AssessmentDetails extends AppCompatActivity {
                 return true;
 
             case R.id.delete:
-                //TODO: add alert for confirmation
+                //TODO: add alert for confirmation?
                 repository.delete(assessment);
-                finish();
-
+                String message = getApplicationContext().getString(R.string.assessment_deleted, assessment.getTitle());
+                Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+                toast.show();
+                this.finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);

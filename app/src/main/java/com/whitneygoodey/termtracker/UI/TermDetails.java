@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -77,9 +78,31 @@ public class TermDetails extends AppCompatActivity {
                 return true;
 
             case R.id.delete:
-                //TODO: add code for deleting
-                repository.delete(term);
-                return true;
+                boolean flag = false;
+                List<Course> allCourses = repository.getAllCourses();
+
+                for (Course course : allCourses) {
+                    if (course.getTermID() == termID) {
+                        flag = true;
+                        break;
+                    }
+                }
+
+                if (flag) {
+                    //TODO display dialog or toast notifying user that term cannot be deleted
+                    String message = getApplicationContext().getString(R.string.cannot_delete_term, term.getTitle());
+                    Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+                    toast.show();
+                } else {
+                    repository.delete(term);
+                    String message = getApplicationContext().getString(R.string.term_deleted, term.getTitle());
+                    Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+                    toast.show();
+                    this.finish();
+                    return true;
+                }
+
+                return false;
         }
         return super.onOptionsItemSelected(item);
     }

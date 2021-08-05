@@ -34,4 +34,8 @@
     <string name="add_new_term">Add new term</string>
     <string name="add_new_course">Add new Course</string>
     <string name="add_new_assessment">Add new assessment</string>
+    <string name="term_deleted">%1s has been deleted.</string>
+    <string name="course_deleted">%1s and associated assessments have been deleted.</string>
+    <string name="assessment_deleted">%1s has been deleted.</string>
+    <string name="cannot_delete_term">%1s cannot be deleted, because it has associated courses.</string>
 </resources>
