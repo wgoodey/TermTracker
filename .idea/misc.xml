@@ -11,10 +11,15 @@
         <entry key="..\:/Users/Whitney/AndroidStudioProjects/TermTracker/app/src/main/res/layout/term_list_item.xml" value="0.25" />
         <entry key="..\:/Users/Whitney/AndroidStudioProjects/TermTracker/app/src/main/res/menu/menu.xml" value="0.184375" />
         <entry key="..\:/Users/Whitney/AndroidStudioProjects/TermTracker/app/src/main/res/menu/term_list_menu.xml" value="0.184375" />
-        <entry key="..\:/Users/wgood/AndroidStudioProjects/TermTracker/app/src/main/res/layout/activity_add_assessment.xml" value="0.3828571428571429" />
+        <entry key="..\:/Users/wgood/AndroidStudioProjects/TermTracker/app/src/main/res/layout-land/activity_add_assessment.xml" value="0.2980599647266314" />
+        <entry key="..\:/Users/wgood/AndroidStudioProjects/TermTracker/app/src/main/res/layout-land/activity_add_course.xml" value="0.2980599647266314" />
+        <entry key="..\:/Users/wgood/AndroidStudioProjects/TermTracker/app/src/main/res/layout-land/activity_add_term.xml" value="0.2980599647266314" />
+        <entry key="..\:/Users/wgood/AndroidStudioProjects/TermTracker/app/src/main/res/layout/activity_add_assessment.xml" value="0.2857142857142857" />
         <entry key="..\:/Users/wgood/AndroidStudioProjects/TermTracker/app/src/main/res/layout/activity_add_course.xml" value="0.3828571428571429" />
         <entry key="..\:/Users/wgood/AndroidStudioProjects/TermTracker/app/src/main/res/layout/activity_add_term.xml" value="0.28351449275362317" />
+        <entry key="..\:/Users/wgood/AndroidStudioProjects/TermTracker/app/src/main/res/layout/activity_assessment_details.xml" value="0.2644927536231884" />
         <entry key="..\:/Users/wgood/AndroidStudioProjects/TermTracker/app/src/main/res/layout/activity_course_details.xml" value="0.28351449275362317" />
+        <entry key="..\:/Users/wgood/AndroidStudioProjects/TermTracker/app/src/main/res/layout/activity_term_details.xml" value="0.3828125" />
         <entry key="..\:/Users/wgood/AndroidStudioProjects/TermTracker/app/src/main/res/menu/menu.xml" value="0.35208333333333336" />
         <entry key="..\:/Users/wgood/AndroidStudioProjects/TermTracker/app/src/main/res/menu/term_list_menu.xml" value="0.35208333333333336" />
       </map>

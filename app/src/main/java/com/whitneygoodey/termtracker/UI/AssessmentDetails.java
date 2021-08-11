@@ -81,7 +81,23 @@ public class AssessmentDetails extends AppCompatActivity {
                 return true;
 
             case R.id.share:
-                //TODO: add code for sharing
+                //get assessment details
+                StringBuilder assessmentDetails = new StringBuilder();
+                assessmentDetails.append(assessment.getTitle()).append("\n")
+                        .append(assessment.getType())
+                        .append("\nStart Date: ").append(assessment.getStartDate())
+                        .append("\nEnd Date: ").append(assessment.getEndDate());
+                if(assessment.getDescription().length() > 0)
+                assessmentDetails.append("\n\nDescription:\n").append(assessment.getDescription());
+
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, assessmentDetails.toString());
+//                sendIntent.putExtra(Intent.EXTRA_TITLE, "Message Title");
+                sendIntent.setType("text/plain");
+
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                startActivity(shareIntent);
                 return true;
 
             case R.id.edit:

@@ -25,7 +25,6 @@ public class TermDetails extends AppCompatActivity {
 
     private Repository repository;
     private int termID;
-    private int courseID;
     private Term term;
 
     @Override
@@ -67,10 +66,28 @@ public class TermDetails extends AppCompatActivity {
 
             case R.id.notify:
                 //TODO: add code for notifications
+
                 return true;
 
             case R.id.share:
-                //TODO: add code for sharing
+                //get term title with course titles and dates
+                StringBuilder termDetails = new StringBuilder();
+                termDetails.append(term.getTitle()).append("course list:\n");
+                for (Course course : repository.getTermCourses(termID)) {
+                    termDetails.append(course.getTitle())
+                            .append(" (")
+                            .append(getApplicationContext().getString(R.string.start_and_end_dates, course.getStartDate(), course.getEndDate()))
+                            .append(")\n");
+                }
+
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, termDetails.toString());
+//                sendIntent.putExtra(Intent.EXTRA_TITLE, "Message Title");
+                sendIntent.setType("text/plain");
+
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                startActivity(shareIntent);
                 return true;
 
             case R.id.edit:
@@ -89,10 +106,14 @@ public class TermDetails extends AppCompatActivity {
                 }
 
                 if (flag) {
-                    //TODO display dialog or toast notifying user that term cannot be deleted
+                    //display toast notifying user that term cannot be deleted
                     String message = getApplicationContext().getString(R.string.cannot_delete_term, term.getTitle());
                     Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
                     toast.show();
+
+                    //TODO display confirmation dialog to delete a term with courses?
+
+
                 } else {
                     repository.delete(term);
                     String message = getApplicationContext().getString(R.string.term_deleted, term.getTitle());

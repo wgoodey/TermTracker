@@ -25,7 +25,6 @@ public class CourseDetails extends AppCompatActivity {
 
     private Repository repository;
     private int courseID;
-    private int assessmentID;
     private Course course;
 
     @Override
@@ -70,7 +69,51 @@ public class CourseDetails extends AppCompatActivity {
                 return true;
 
             case R.id.share:
-                //TODO: add code for sharing
+                //get course title with details
+                StringBuilder courseDetails = new StringBuilder();
+                courseDetails.append(course.getTitle());
+                //TODO: fill in the rest of the details
+                courseDetails.append("\nStatus: ").append(course.getStatus())
+                        .append("\nStart Date: ").append(course.getStartDate())
+                        .append("\nEnd Date: ").append(course.getEndDate())
+                        .append("\n\nInstructor")
+                        .append("\nName: ").append(course.getInstructorName())
+                        .append("\nEmail: ").append(course.getInstructorEmail())
+                        .append("\nPhone: ").append(course.getInstructorPhone());
+                if (course.getNote().length() > 0) {
+                    courseDetails.append("\n\nNote: ")
+                            .append(course.getNote());
+                }
+                courseDetails.append("\n\nAssessments:\n");
+                List<Assessment> courseAssessments = repository.getCourseAssessments(courseID);
+                if (courseAssessments.size() > 0) {
+                    //get assessment details
+                    for (Assessment assessment : repository.getCourseAssessments(courseID)) {
+                        courseDetails.append(assessment.getTitle());
+                        if (assessment.getType() == Assessment.Type.OBJECTIVE) {
+                            courseDetails.append(" (OA)");
+                        } else {
+                            courseDetails.append(" (PA)");
+
+                        }
+
+                        //TODO: add check for identical start and end dates and if so, only append one
+                        courseDetails.append("\nStart Date: ").append(assessment.getStartDate())
+                                .append("\nEnd Date: ").append(assessment.getEndDate()).append("\n");
+                    }
+                }else {
+                    courseDetails.append("None specified for this course.");
+                }
+
+
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, courseDetails.toString());
+//                sendIntent.putExtra(Intent.EXTRA_TITLE, "Message Title");
+                sendIntent.setType("text/plain");
+
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                startActivity(shareIntent);
                 return true;
 
             case R.id.edit:

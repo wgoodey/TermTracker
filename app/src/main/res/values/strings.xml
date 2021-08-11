@@ -38,4 +38,5 @@
     <string name="course_deleted">%1s and associated assessments have been deleted.</string>
     <string name="assessment_deleted">%1s has been deleted.</string>
     <string name="cannot_delete_term">%1s cannot be deleted, because it has associated courses.</string>
+    <string name="new_course">New Course</string>
 </resources>
