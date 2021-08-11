@@ -31,8 +31,7 @@ public class AddTerm extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         repository = new Repository(getApplication());
-
-
+        
         titleEdit = findViewById(R.id.titleEditText);
         startEdit = findViewById(R.id.editStartDate);
         endEdit = findViewById(R.id.editEndDate);

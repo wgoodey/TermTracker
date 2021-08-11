@@ -1,5 +1,6 @@
 package com.whitneygoodey.termtracker.UI;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,7 +19,11 @@ import com.whitneygoodey.termtracker.Entities.Course;
 import com.whitneygoodey.termtracker.Entities.Term;
 import com.whitneygoodey.termtracker.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class TermDetails extends AppCompatActivity {
@@ -66,6 +71,21 @@ public class TermDetails extends AppCompatActivity {
 
             case R.id.notify:
                 //TODO: add code for notifications
+                String dateFromScreen = term.getStartDate();
+                String dateFormat = "MM/dd/yyyy";
+                SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
+                Date myDate = null;
+
+                try {
+                    myDate = sdf.parse(dateFromScreen);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Long trigger = myDate.getTime();
+                Intent intent = new Intent(TermDetails.this, MyReceiver.class);
+                intent.putExtra("key", "Notification message");
+                PendingIntent sender = PendingIntent.getBroadcast(TermDetails.this, ++MainActivity.numAlert, intent, 0);
+
 
                 return true;
 
