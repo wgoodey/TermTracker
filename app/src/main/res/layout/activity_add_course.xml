@@ -64,6 +64,7 @@
             android:minHeight="48dp"
             android:minEms="6"
             android:paddingHorizontal="5dp"
+            android:focusable="false"
             app:layout_constraintBottom_toBottomOf="@+id/startDateLabel"
             app:layout_constraintStart_toEndOf="@+id/startDateLabel"
             app:layout_constraintTop_toTopOf="@+id/startDateLabel" />
@@ -88,34 +89,11 @@
             android:minHeight="48dp"
             android:minEms="6"
             android:paddingVertical="5dp"
+            android:focusable="false"
             app:layout_constraintBottom_toBottomOf="@+id/endDateLabel"
             app:layout_constraintStart_toStartOf="@+id/editStartDate"
             app:layout_constraintTop_toTopOf="@+id/endDateLabel" />
 
-
-        <ImageView
-            android:id="@+id/cal_icon1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="35dp"
-            android:minHeight="35dp"
-            android:onClick="showDatePicker"
-            app:layout_constraintBottom_toBottomOf="@+id/editStartDate"
-            app:layout_constraintStart_toEndOf="@+id/editStartDate"
-            app:layout_constraintTop_toTopOf="@+id/editStartDate"
-            app:srcCompat="@drawable/ic_date" />
-
-        <ImageView
-            android:id="@+id/cal_icon2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="35dp"
-            android:minHeight="35dp"
-            android:onClick="showDatePicker"
-            app:layout_constraintBottom_toBottomOf="@+id/editEndDate"
-            app:layout_constraintStart_toEndOf="@+id/editEndDate"
-            app:layout_constraintTop_toBottomOf="@+id/editStartDate"
-            app:srcCompat="@drawable/ic_date" />
 
         <EditText
             android:id="@+id/editName"

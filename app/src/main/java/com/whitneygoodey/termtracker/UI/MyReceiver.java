@@ -19,7 +19,7 @@ public class MyReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 //        Toast.makeText(context, intent.getStringExtra("content"), Toast.LENGTH_LONG).show();
-        String title = intent.getStringExtra("type");
+        String title = intent.getStringExtra("type") + " events";
         createNotificationChannel(context, channel_id);
         Notification n = new NotificationCompat.Builder(context, channel_id)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
