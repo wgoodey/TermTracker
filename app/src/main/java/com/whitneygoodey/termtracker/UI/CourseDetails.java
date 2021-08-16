@@ -1,5 +1,8 @@
 package com.whitneygoodey.termtracker.UI;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,13 +21,13 @@ import com.whitneygoodey.termtracker.Entities.Assessment;
 import com.whitneygoodey.termtracker.Entities.Course;
 import com.whitneygoodey.termtracker.R;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
 public class CourseDetails extends AppCompatActivity {
 
     private Repository repository;
-    private int courseID;
     private Course course;
 
     @Override
@@ -35,15 +38,17 @@ public class CourseDetails extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        repository = new Repository(getApplication());
+
         try {
-            courseID = getIntent().getIntExtra("courseID", -1);
+            int courseID = getIntent().getIntExtra("courseID", -1);
+            course = repository.getCourse(courseID);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         //get course and assessments from the database
-        repository = new Repository(getApplication());
-        setCourseDetailsOnScreen();
+        setCourseDetailsOnScreen(course);
     }
 
     @Override
@@ -61,11 +66,47 @@ public class CourseDetails extends AppCompatActivity {
                 return true;
 
             case R.id.refresh:
-                setCourseDetailsOnScreen();
+                course = repository.getCourse(course.getID());
+                setCourseDetailsOnScreen(course);
                 return true;
 
             case R.id.notify:
-                //TODO: add code for notifications
+                //create notification contents
+                String startContent = course.getTitle() + " is starting today.";
+                String endContent = course.getTitle() + " is ending today.";
+                String content = course.getTitle() + " is today.";
+                String toastMessage = course.getTitle() + " notification(s) set.";
+
+                //get dates from term and convert to ZonedDateTime
+                ZonedDateTime start = MainActivity.getZonedDateTime(course.getStartDate());
+                ZonedDateTime end = MainActivity.getZonedDateTime(course.getEndDate());
+                Long startTrigger = start.toInstant().toEpochMilli();
+                Long endTrigger = end.toInstant().toEpochMilli();
+
+                //set flags to true if the dates are in the future
+                boolean startFuture = start.isAfter(ZonedDateTime.now());
+                boolean endFuture = end.isAfter(ZonedDateTime.now());
+
+                //set notifications only for events that are in the future
+                if (startFuture) {
+                    if (start == end) {
+                        //register a single notification for both
+                        createNotification(content, startTrigger);
+                    } else {
+                        //register start notification
+                        createNotification(startContent, startTrigger);
+                        createNotification(endContent, endTrigger);
+                    }
+                } else if (endFuture) {
+                    //register end notification
+                    createNotification(endContent, endTrigger);
+                } else {
+                    //warn that no notifications were made
+                    Toast.makeText(getApplicationContext(), "Notifications cannot be made for past events.", Toast.LENGTH_LONG).show();
+                    break;
+                }
+
+                Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
                 return true;
 
             case R.id.share:
@@ -85,10 +126,10 @@ public class CourseDetails extends AppCompatActivity {
                             .append(course.getNote());
                 }
                 courseDetails.append("\n\nAssessments:\n");
-                List<Assessment> courseAssessments = repository.getCourseAssessments(courseID);
+                List<Assessment> courseAssessments = repository.getCourseAssessments(course.getID());
                 if (courseAssessments.size() > 0) {
                     //get assessment details
-                    for (Assessment assessment : repository.getCourseAssessments(courseID)) {
+                    for (Assessment assessment : repository.getCourseAssessments(course.getID())) {
                         courseDetails.append(assessment.getTitle());
                         if (assessment.getType() == Assessment.Type.OBJECTIVE) {
                             courseDetails.append(" (OA)");
@@ -117,14 +158,14 @@ public class CourseDetails extends AppCompatActivity {
                 return true;
 
             case R.id.edit:
-                editCourse(courseID);
+                editCourse(course);
                 return true;
 
             case R.id.delete:
                 //if course has associated assessments, delete those.
                 List<Assessment> allAssessments = repository.getAllAssessments();
                 for (Assessment assessment : allAssessments) {
-                    if (assessment.getCourseID() == courseID) {
+                    if (assessment.getCourseID() == course.getID()) {
                         repository.delete(assessment);
                     }
                 }
@@ -139,10 +180,7 @@ public class CourseDetails extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setCourseDetailsOnScreen() {
-        //get course from the database
-        course = repository.getCourse(courseID);
-
+    private void setCourseDetailsOnScreen(Course course) {
         //get views
         TextView title = findViewById(R.id.editCourseTitle);
         title.setText(course.getTitle());
@@ -164,7 +202,7 @@ public class CourseDetails extends AppCompatActivity {
         note.setText(course.getNote());
 
         //set RecyclerView and AssessmentAdapter
-        List<Assessment> assessmentList = repository.getCourseAssessments(courseID);
+        List<Assessment> assessmentList = repository.getCourseAssessments(course.getID());
         RecyclerView recyclerView = findViewById(R.id.assessmentsRecyclerView);
         final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this);
         recyclerView.setAdapter(assessmentAdapter);
@@ -175,14 +213,25 @@ public class CourseDetails extends AppCompatActivity {
 
     public void addAssessment(View view) {
         Intent intent = new Intent(CourseDetails.this, AddAssessment.class);
-        intent.putExtra("courseID", courseID);
+        intent.putExtra("courseID", course.getID());
         startActivity(intent);
     }
 
-    public void editCourse(int courseID) {
+    private void editCourse(Course course) {
         Intent intent = new Intent(CourseDetails.this, AddCourse.class);
-        intent.putExtra("courseID", courseID);
+        intent.putExtra("courseID", course.getID());
+        intent.putExtra("termID", course.getTermID());
         startActivity(intent);
+    }
+
+    private void createNotification(String content, Long trigger) {
+        Intent startIntent = new Intent(CourseDetails.this, MyReceiver.class);
+        startIntent.putExtra("type", "Course");
+        startIntent.putExtra("content", content);
+
+        PendingIntent sender = PendingIntent.getBroadcast(CourseDetails.this, ++MainActivity.numAlert, startIntent, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
     }
 
 }

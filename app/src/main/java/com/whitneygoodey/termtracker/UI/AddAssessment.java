@@ -1,6 +1,8 @@
 package com.whitneygoodey.termtracker.UI;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -15,10 +17,10 @@ import com.whitneygoodey.termtracker.R;
 
 public class AddAssessment extends AppCompatActivity {
 
-    Repository repository;
-    Assessment assessment;
-    int id = -1;
+    int id;
     int courseID;
+    Assessment assessment;
+    Repository repository;
     EditText titleEdit;
     EditText startEdit;
     EditText endEdit;
@@ -45,6 +47,13 @@ public class AddAssessment extends AppCompatActivity {
         performance = findViewById(R.id.performanceRadio);
         descriptionEdit = findViewById(R.id.editDescription);
 
+        //set date hints
+        startEdit.setHint(MainActivity.formatDateHints());
+        endEdit.setHint(MainActivity.formatDateHints());
+
+        //TODO: set datePickers for startEdit and endEdit
+
+
         try {
             id = getIntent().getIntExtra("assessmentID", -1);
             courseID = getIntent().getIntExtra("courseID", -1);
@@ -67,16 +76,33 @@ public class AddAssessment extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.save_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
                 return true;
+
+            case R.id.save:
+                String title = titleEdit.getText().toString();
+                String startDate = startEdit.getText().toString();
+                String endDate = endEdit.getText().toString();
+                if (MainActivity.isValid(getApplicationContext(), title, startDate, endDate)) {
+                    saveAssessment();
+                    finish();
+                    return true;
+                }
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void saveAssessment(View view) {
+    public void saveAssessment() {
 
         String title;
         String startDate;
@@ -93,7 +119,6 @@ public class AddAssessment extends AppCompatActivity {
             type = Assessment.Type.PERFORMANCE;
         } else type = Assessment.Type.OBJECTIVE;
 
-        //check if new assessment or not
         if (id == -1) {
             //create new assessment without id and insert into database
             assessment = new Assessment(courseID, title, startDate, endDate, description, type);
@@ -103,11 +128,6 @@ public class AddAssessment extends AppCompatActivity {
             assessment = new Assessment(id, courseID, title, startDate, endDate, description, type);
             repository.update(assessment);
         }
-
-//        Intent intent = new Intent(AddAssessment.this, CourseDetails.class);
-//        intent.putExtra("courseID", courseID);
-//        startActivity(intent);
-        finish();
     }
 
     //TODO: change return so date is entered in dateEditText

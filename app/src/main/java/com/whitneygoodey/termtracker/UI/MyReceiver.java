@@ -6,7 +6,6 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
@@ -19,18 +18,18 @@ public class MyReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // TODO: This method is called when the BroadcastReceiver is receiving
-        // an Intent broadcast.
-        Toast.makeText(context, intent.getStringExtra("key"), Toast.LENGTH_LONG).show();
+//        Toast.makeText(context, intent.getStringExtra("content"), Toast.LENGTH_LONG).show();
+        String title = intent.getStringExtra("type");
         createNotificationChannel(context, channel_id);
         Notification n = new NotificationCompat.Builder(context, channel_id)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentText(intent.getStringExtra("key"))
-                .setContentTitle("notification title").build();
+                .setContentText(intent.getStringExtra("content"))
+                .setContentTitle(title)
+                .build();
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(notificationID++, n);
-        throw new UnsupportedOperationException("Not yet implemented");
+//        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     private void createNotificationChannel(Context context, String CHANNEL_ID) {

@@ -36,6 +36,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
 
                     Intent intent = new Intent(context, AssessmentDetails.class);
                     intent.putExtra("assessmentID", current.getID());
+                    intent.putExtra("courseID", current.getCourseID());
                     context.startActivity(intent);
                 }
             });
@@ -67,7 +68,12 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
 
             //set text in ViewHolder
             holder.assessmentTitle.setText(context.getString(R.string.assessment_list_title, title, type));
-            String dates = context.getString(R.string.start_and_end_dates, current.getStartDate(), current.getEndDate());
+            String dates;
+            if (current.getStartDate().equals(current.getEndDate())) {
+                dates = current.getStartDate();
+            } else {
+                dates = context.getString(R.string.start_and_end_dates, current.getStartDate(), current.getEndDate());
+            }
             holder.startAndEndDates.setText(dates);
 
         } else {

@@ -1,6 +1,8 @@
 package com.whitneygoodey.termtracker.UI;
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,17 +21,13 @@ import com.whitneygoodey.termtracker.Entities.Course;
 import com.whitneygoodey.termtracker.Entities.Term;
 import com.whitneygoodey.termtracker.R;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 public class TermDetails extends AppCompatActivity {
 
     private Repository repository;
-    private int termID;
     private Term term;
 
     @Override
@@ -40,15 +38,17 @@ public class TermDetails extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        repository = new Repository(getApplication());
+
         try {
-            termID = getIntent().getIntExtra("termID", -1);
+            int termID = getIntent().getIntExtra("termID", -1);
+            term = repository.getTerm(termID);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         //get term and courses from the database
-        repository = new Repository(getApplication());
-        setTermDetailsOnScreen();
+        setTermDetailsOnScreen(term);
     }
 
     @Override
@@ -66,34 +66,54 @@ public class TermDetails extends AppCompatActivity {
                 return true;
 
             case R.id.refresh:
-                setTermDetailsOnScreen();
+                term = repository.getTerm(term.getID());
+                setTermDetailsOnScreen(term);
                 return true;
 
             case R.id.notify:
-                //TODO: add code for notifications
-                String dateFromScreen = term.getStartDate();
-                String dateFormat = "MM/dd/yyyy";
-                SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
-                Date myDate = null;
+                //create notification contents
+                String startContent = term.getTitle() + " is starting today.";
+                String endContent = term.getTitle() + " is ending today.";
+                String content = term.getTitle() + " is today.";
+                String toastMessage = term.getTitle() + " notification(s) set.";
 
-                try {
-                    myDate = sdf.parse(dateFromScreen);
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                //get dates from term and convert to ZonedDateTime
+                java.time.ZonedDateTime start = MainActivity.getZonedDateTime(term.getStartDate());
+                ZonedDateTime end = MainActivity.getZonedDateTime(term.getEndDate());
+                Long startTrigger = start.toInstant().toEpochMilli();
+                Long endTrigger = end.toInstant().toEpochMilli();
+
+                //set flags to true if the dates are in the future
+                boolean startFuture = start.isAfter(ZonedDateTime.now());
+                boolean endFuture = end.isAfter(ZonedDateTime.now());
+
+                //set notifications only for events that are in the future
+                if (startFuture) {
+                    if (start == end) {
+                        //register a single notification for both
+                        createNotification(content, startTrigger);
+                    } else {
+                        //register start notification
+                        createNotification(startContent, startTrigger);
+                        createNotification(endContent, endTrigger);
+                    }
+                } else if (endFuture) {
+                    //register end notification
+                    createNotification(endContent, endTrigger);
+                } else {
+                    //warn that no notifications were made
+                    Toast.makeText(getApplicationContext(), "Notifications cannot be made for past events.", Toast.LENGTH_LONG).show();
+                    break;
                 }
-                Long trigger = myDate.getTime();
-                Intent intent = new Intent(TermDetails.this, MyReceiver.class);
-                intent.putExtra("key", "Notification message");
-                PendingIntent sender = PendingIntent.getBroadcast(TermDetails.this, ++MainActivity.numAlert, intent, 0);
 
-
+                Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
                 return true;
 
             case R.id.share:
                 //get term title with course titles and dates
                 StringBuilder termDetails = new StringBuilder();
                 termDetails.append(term.getTitle()).append("course list:\n");
-                for (Course course : repository.getTermCourses(termID)) {
+                for (Course course : repository.getTermCourses(term.getID())) {
                     termDetails.append(course.getTitle())
                             .append(" (")
                             .append(getApplicationContext().getString(R.string.start_and_end_dates, course.getStartDate(), course.getEndDate()))
@@ -111,7 +131,7 @@ public class TermDetails extends AppCompatActivity {
                 return true;
 
             case R.id.edit:
-                editTerm(termID);
+                editTerm(term.getID());
                 return true;
 
             case R.id.delete:
@@ -119,7 +139,7 @@ public class TermDetails extends AppCompatActivity {
                 List<Course> allCourses = repository.getAllCourses();
 
                 for (Course course : allCourses) {
-                    if (course.getTermID() == termID) {
+                    if (course.getTermID() == term.getID()) {
                         flag = true;
                         break;
                     }
@@ -132,7 +152,6 @@ public class TermDetails extends AppCompatActivity {
                     toast.show();
 
                     //TODO display confirmation dialog to delete a term with courses?
-
 
                 } else {
                     repository.delete(term);
@@ -148,10 +167,7 @@ public class TermDetails extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setTermDetailsOnScreen() {
-        //get term from the database
-        term = repository.getTerm(termID);
-
+    private void setTermDetailsOnScreen(Term term) {
         //set term info on screen
         TextView title = findViewById(R.id.termTitle);
         TextView start = findViewById(R.id.textStartDate);
@@ -161,7 +177,7 @@ public class TermDetails extends AppCompatActivity {
         end.setText(term.getEndDate());
 
         //set RecyclerView and CourseAdapter
-        List<Course> courseList = repository.getTermCourses(termID);
+        List<Course> courseList = repository.getTermCourses(term.getID());
         RecyclerView recyclerView = findViewById(R.id.courseRecyclerView);
         final CourseAdapter courseAdapter = new CourseAdapter(this);
         recyclerView.setAdapter(courseAdapter);
@@ -171,15 +187,23 @@ public class TermDetails extends AppCompatActivity {
 
     public void addCourse(View view) {
         Intent intent = new Intent(TermDetails.this, AddCourse.class);
-        intent.putExtra("termID", termID);
+        intent.putExtra("termID", term.getID());
         startActivity(intent);
     }
 
-    public void editTerm(int termID) {
+    private void editTerm(int termID) {
         Intent intent = new Intent(TermDetails.this, AddTerm.class);
         intent.putExtra("termID", termID);
         startActivity(intent);
     }
 
+    private void createNotification(String content, Long trigger) {
+        Intent startIntent = new Intent(TermDetails.this, MyReceiver.class);
+        startIntent.putExtra("type", "Term");
+        startIntent.putExtra("content", content);
 
+        PendingIntent sender = PendingIntent.getBroadcast(TermDetails.this, ++MainActivity.numAlert, startIntent, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
+    }
 }

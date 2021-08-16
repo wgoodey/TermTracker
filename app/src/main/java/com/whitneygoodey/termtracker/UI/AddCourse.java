@@ -1,6 +1,8 @@
 package com.whitneygoodey.termtracker.UI;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -19,8 +21,8 @@ public class AddCourse extends AppCompatActivity {
 
     int id;
     int termID;
-    Repository repository;
     Course course;
+    Repository repository;
     EditText titleEdit;
     EditText startEdit;
     EditText endEdit;
@@ -49,9 +51,8 @@ public class AddCourse extends AppCompatActivity {
         noteEdit = findViewById(R.id.editNote);
         statusSpinner = findViewById(R.id.statusSpinner);
 
-        //TODO: set spinner list
-//        Arrays.asList(Course.Status.values()).forEach(status -> statusOptions.add(status));
-        statusSpinner.setAdapter(new ArrayAdapter<Course.Status>(this, android.R.layout.simple_spinner_item, Course.Status.values()));
+        //set status spinner list
+        statusSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Course.Status.values()));
 
         try {
             id = getIntent().getIntExtra("courseID", -1);
@@ -72,9 +73,40 @@ public class AddCourse extends AppCompatActivity {
             phoneEdit.setText(course.getInstructorPhone());
             noteEdit.setText(course.getNote());
 
-            //TODO: set status spinner
+            //set date hints
+            startEdit.setHint(MainActivity.formatDateHints());
+            endEdit.setHint(MainActivity.formatDateHints());
+
+            //TODO: set datePickers for startEdit and endEdit
+
+
+            //set status spinner
+            switch (course.getStatus()) {
+                case PLANNED:
+                    statusSpinner.setSelection(0);
+                    break;
+                case ENROLLED:
+                    statusSpinner.setSelection(1);
+                    break;
+                case PROGRESS:
+                    statusSpinner.setSelection(2);
+                    break;
+                case COMPLETED:
+                    statusSpinner.setSelection(3);
+                    break;
+                default:
+                    statusSpinner.setSelection(4);
+                    break;
+            }
 
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.save_menu, menu);
+        return true;
     }
 
     @Override
@@ -83,17 +115,21 @@ public class AddCourse extends AppCompatActivity {
             case android.R.id.home:
                 this.finish();
                 return true;
+
+            case R.id.save:
+                String title = titleEdit.getText().toString();
+                String startDate = startEdit.getText().toString();
+                String endDate = endEdit.getText().toString();
+                if (MainActivity.isValid(getApplicationContext(), title, startDate, endDate)) {
+                    saveCourse();
+                    finish();
+                    return true;
+                }
         }
         return super.onOptionsItemSelected(item);
     }
 
-    //TODO: change return so date is entered in dateEditText
-    public void showDatePicker(View view) {
-        //TODO: configure screen to show DatePicker with click on calendar icon
-
-    }
-
-    public void saveCourse(View view) {
+    public void saveCourse() {
         String title;
         Course.Status status;
         String startDate;
@@ -140,9 +176,11 @@ public class AddCourse extends AppCompatActivity {
             course = new Course(id, termID, title, status, startDate, endDate, name, email, phone, note);
             repository.update(course);
         }
-        finish();
-//        Intent intent = new Intent(AddCourse.this, CourseDetails.class);
-//        intent.putExtra("termID", termID);
-//        startActivity(intent);
+    }
+
+    //TODO: change return so date is entered in dateEditText
+    public void showDatePicker(View view) {
+        //TODO: configure screen to show DatePicker with click on calendar icon
+
     }
 }

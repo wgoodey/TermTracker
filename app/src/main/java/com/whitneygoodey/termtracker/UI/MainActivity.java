@@ -1,8 +1,10 @@
 package com.whitneygoodey.termtracker.UI;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,9 +14,17 @@ import com.whitneygoodey.termtracker.Entities.Course;
 import com.whitneygoodey.termtracker.Entities.Term;
 import com.whitneygoodey.termtracker.R;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class MainActivity extends AppCompatActivity {
 
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     public static int numAlert;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,4 +61,39 @@ public class MainActivity extends AppCompatActivity {
         repository.insert(assessment2);
     }
 
+    public static ZonedDateTime getZonedDateTime(String date) {
+        ZonedDateTime zdt = null;
+        LocalDate ld = LocalDate.parse(date, formatter);
+        LocalDateTime ldt = ld.atStartOfDay();
+        ZoneId zone = ZoneId.systemDefault();
+        zdt = ZonedDateTime.of(ldt, zone);
+
+        return zdt;
+    }
+
+    public static String formatDateHints() {
+        return LocalDate.now().format(formatter);
+    }
+
+    public static boolean isValid(Context context, String title, String start, String end) {
+        boolean validity = true;
+
+        try {
+            ZonedDateTime startDate = getZonedDateTime(start);
+            ZonedDateTime endDate = getZonedDateTime(end);
+
+            if (title.equals("") || start.equals("") || end.equals("")) {
+                Toast.makeText(context, "Title and dates are required.", Toast.LENGTH_LONG).show();
+                validity = false;
+            } else if (endDate.isBefore(startDate)) {
+                Toast.makeText(context, "The end date cannot be earlier than the start date.", Toast.LENGTH_LONG).show();
+                validity = false;
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "Dates must be in the format mm/dd/yyyy.", Toast.LENGTH_LONG).show();
+            validity = false;
+        }
+
+        return validity;
+    }
 }

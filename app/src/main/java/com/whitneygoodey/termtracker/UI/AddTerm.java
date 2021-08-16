@@ -1,6 +1,8 @@
 package com.whitneygoodey.termtracker.UI;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -15,12 +17,12 @@ import java.util.Objects;
 
 public class AddTerm extends AppCompatActivity {
 
-    int id = -1;
+    int id;
     Term term;
+    Repository repository;
     EditText titleEdit;
     EditText startEdit;
     EditText endEdit;
-    Repository repository;
 
 
     @Override
@@ -35,6 +37,12 @@ public class AddTerm extends AppCompatActivity {
         titleEdit = findViewById(R.id.titleEditText);
         startEdit = findViewById(R.id.editStartDate);
         endEdit = findViewById(R.id.editEndDate);
+
+        //set date hints
+        startEdit.setHint(MainActivity.formatDateHints());
+        endEdit.setHint(MainActivity.formatDateHints());
+
+        //TODO: set datePickers for startEdit and endEdit
 
         try {
             id = getIntent().getIntExtra("termID", -1);
@@ -54,17 +62,33 @@ public class AddTerm extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.save_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
                 return true;
+
+            case R.id.save:
+                String title = titleEdit.getText().toString();
+                String startDate = startEdit.getText().toString();
+                String endDate = endEdit.getText().toString();
+                if (MainActivity.isValid(getApplicationContext(), title, startDate, endDate)) {
+                    saveTerm();
+                    finish();
+                    return true;
+                }
         }
         return super.onOptionsItemSelected(item);
     }
 
-    //TODO: test editing Term
-    public void saveTerm(View view) {
+    public void saveTerm() {
         String title = titleEdit.getText().toString();
         String startDate = startEdit.getText().toString();
         String endDate = endEdit.getText().toString();
@@ -72,12 +96,11 @@ public class AddTerm extends AppCompatActivity {
         if (id == -1) {
             term = new Term(title, startDate, endDate);
             repository.insert(term);
+
         } else {
             term = new Term(id, title, startDate, endDate);
             repository.update(term);
         }
-        //TODO: figure out how to update termRecycleView automatically
-        finish();
     }
 
     //TODO: change return so date is entered in dateEditText
