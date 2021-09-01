@@ -93,12 +93,13 @@ public class AssessmentDetails extends AppCompatActivity {
                 Long endTrigger = end.toInstant().toEpochMilli();
 
                 //set flags to true if the dates are in the future
+//                ZonedDateTime currentDate = ZonedDateTime.now().withHour(00).withMinute(0).withSecond(0).withNano(0).minusNanos(1);
                 boolean startFuture = start.isAfter(ZonedDateTime.now());
                 boolean endFuture = end.isAfter(ZonedDateTime.now());
 
                 //set notifications only for events that are in the future
                 if (startFuture) {
-                    if (start == end) {
+                    if (start.equals(end)) {
                         //register a single notification for both
                         createNotification(content, startTrigger);
                     } else {
@@ -143,7 +144,7 @@ public class AssessmentDetails extends AppCompatActivity {
                 return true;
 
             case R.id.delete:
-                //TODO: add alert for confirmation?
+                //TODO: change this to an alert for confirmation?
                 repository.delete(assessment);
                 String message = getApplicationContext().getString(R.string.assessment_deleted, assessment.getTitle());
                 Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);

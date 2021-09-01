@@ -78,18 +78,20 @@ public class TermDetails extends AppCompatActivity {
                 String toastMessage = term.getTitle() + " notification(s) set.";
 
                 //get dates from term and convert to ZonedDateTime
-                java.time.ZonedDateTime start = MainActivity.getZonedDateTime(term.getStartDate());
+                ZonedDateTime start = MainActivity.getZonedDateTime(term.getStartDate());
                 ZonedDateTime end = MainActivity.getZonedDateTime(term.getEndDate());
                 Long startTrigger = start.toInstant().toEpochMilli();
                 Long endTrigger = end.toInstant().toEpochMilli();
 
+
                 //set flags to true if the dates are in the future
+//                ZonedDateTime currentDate = ZonedDateTime.now().withHour(00).withMinute(0).withSecond(0).withNano(0).minusNanos(1);
                 boolean startFuture = start.isAfter(ZonedDateTime.now());
                 boolean endFuture = end.isAfter(ZonedDateTime.now());
 
                 //set notifications only for events that are in the future
                 if (startFuture) {
-                    if (start == end) {
+                    if (start.equals(end)) {
                         //register a single notification for both
                         createNotification(content, startTrigger);
                     } else {
@@ -151,7 +153,7 @@ public class TermDetails extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
                     toast.show();
 
-                    //TODO display confirmation dialog to delete a term with courses?
+                    //TODO display confirmation dialog to delete a term with courses instead of just a warning toast?
 
                 } else {
                     repository.delete(term);

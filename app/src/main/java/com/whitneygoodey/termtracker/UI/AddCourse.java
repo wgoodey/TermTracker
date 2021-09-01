@@ -54,6 +54,39 @@ public class AddCourse extends AppCompatActivity {
         noteEdit = findViewById(R.id.editNote);
         statusSpinner = findViewById(R.id.statusSpinner);
 
+        //set date hints
+        startEdit.setHint(MainActivity.formatDateHints());
+        endEdit.setHint(MainActivity.formatDateHints());
+
+        //set datePickers for startEdit and endEdit
+        final Calendar myCalendar = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener startDate = (view, year, month, dayOfMonth) -> {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, month);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateEditText(myCalendar, startEdit);
+        };
+
+        DatePickerDialog.OnDateSetListener endDate = (view, year, month, dayOfMonth) -> {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, month);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateEditText(myCalendar, endEdit);
+        };
+
+        startEdit.setOnClickListener(v -> {
+            new DatePickerDialog(AddCourse.this, startDate, myCalendar
+                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            updateEditText(myCalendar, startEdit);
+        });
+
+        endEdit.setOnClickListener(v -> {
+            new DatePickerDialog(AddCourse.this, endDate, myCalendar
+                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        });
+
         //set status spinner list
         statusSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Course.Status.values()));
 
@@ -76,10 +109,6 @@ public class AddCourse extends AppCompatActivity {
             phoneEdit.setText(course.getInstructorPhone());
             noteEdit.setText(course.getNote());
 
-            //set date hints
-            startEdit.setHint(MainActivity.formatDateHints());
-            endEdit.setHint(MainActivity.formatDateHints());
-
             //set status spinner
             switch (course.getStatus()) {
                 case PLANNED:
@@ -99,34 +128,6 @@ public class AddCourse extends AppCompatActivity {
                     break;
             }
 
-            //set datePickers for startEdit and endEdit
-            final Calendar myCalendar = Calendar.getInstance();
-            DatePickerDialog.OnDateSetListener startDate = (view, year, month, dayOfMonth) -> {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, month);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel(myCalendar, startEdit);
-            };
-
-            DatePickerDialog.OnDateSetListener endDate = (view, year, month, dayOfMonth) -> {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, month);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel(myCalendar, endEdit);
-            };
-
-            startEdit.setOnClickListener(v -> {
-                new DatePickerDialog(AddCourse.this, startDate, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-                updateLabel(myCalendar, startEdit);
-            });
-
-            endEdit.setOnClickListener(v -> {
-                new DatePickerDialog(AddCourse.this, endDate, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            });
         }
     }
 
@@ -176,7 +177,7 @@ public class AddCourse extends AppCompatActivity {
         phone = phoneEdit.getText().toString();
         note = noteEdit.getText().toString();
 
-        //TODO: get status from spinner
+        //get status from spinner
         switch (statusSpinner.getSelectedItem().toString()) {
             case "Enrolled":
                 status = Course.Status.ENROLLED;
@@ -206,7 +207,7 @@ public class AddCourse extends AppCompatActivity {
         }
     }
 
-    private void updateLabel(Calendar myCalendar, EditText editText) {
+    private void updateEditText(Calendar myCalendar, EditText editText) {
         String myFormat = "MM/dd/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         editText.setText(sdf.format(myCalendar.getTime()));

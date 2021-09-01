@@ -84,12 +84,13 @@ public class CourseDetails extends AppCompatActivity {
                 Long endTrigger = end.toInstant().toEpochMilli();
 
                 //set flags to true if the dates are in the future
+//                ZonedDateTime currentDate = ZonedDateTime.now().withHour(00).withMinute(0).withSecond(0).withNano(0).minusNanos(1);
                 boolean startFuture = start.isAfter(ZonedDateTime.now());
                 boolean endFuture = end.isAfter(ZonedDateTime.now());
 
                 //set notifications only for events that are in the future
                 if (startFuture) {
-                    if (start == end) {
+                    if (start.equals(end)) {
                         //register a single notification for both
                         createNotification(content, startTrigger);
                     } else {
@@ -113,7 +114,7 @@ public class CourseDetails extends AppCompatActivity {
                 //get course title with details
                 StringBuilder courseDetails = new StringBuilder();
                 courseDetails.append(course.getTitle());
-                //TODO: fill in the rest of the details
+                //fill in the rest of the details
                 courseDetails.append("\nStatus: ").append(course.getStatus())
                         .append("\nStart Date: ").append(course.getStartDate())
                         .append("\nEnd Date: ").append(course.getEndDate())

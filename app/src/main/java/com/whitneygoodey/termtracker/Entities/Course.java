@@ -65,7 +65,6 @@ public class Course {
     }
 
     @Override
-    //TODO: experiment with status.toString()
     public String toString() {
         return "Course{" +
                 "ID='" + ID + '\'' +

@@ -7,8 +7,6 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "term_table")
 public class Term {
 
-    //TODO: experiment with using LocalDates and format with .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)
-
     @PrimaryKey(autoGenerate = true)
     private int ID;
     private String title;

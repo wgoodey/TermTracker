@@ -55,6 +55,35 @@ public class AddAssessment extends AppCompatActivity {
         startEdit.setHint(MainActivity.formatDateHints());
         endEdit.setHint(MainActivity.formatDateHints());
 
+        //set datePickers for startEdit and endEdit
+        final Calendar myCalendar = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener startDate = (view, year, month, dayOfMonth) -> {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, month);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateEditText(myCalendar, startEdit);
+        };
+
+        DatePickerDialog.OnDateSetListener endDate = (view, year, month, dayOfMonth) -> {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, month);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateEditText(myCalendar, endEdit);
+        };
+
+        startEdit.setOnClickListener(v -> {
+            new DatePickerDialog(AddAssessment.this, startDate, myCalendar
+                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            updateEditText(myCalendar, startEdit);
+        });
+
+        endEdit.setOnClickListener(v -> {
+            new DatePickerDialog(AddAssessment.this, endDate, myCalendar
+                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        });
+
         try {
             id = getIntent().getIntExtra("assessmentID", -1);
             courseID = getIntent().getIntExtra("courseID", -1);
@@ -74,35 +103,6 @@ public class AddAssessment extends AppCompatActivity {
             }
             descriptionEdit.setText(assessment.getDescription());
         }
-
-        //set datePickers for startEdit and endEdit
-        final Calendar myCalendar = Calendar.getInstance();
-        DatePickerDialog.OnDateSetListener startDate = (view, year, month, dayOfMonth) -> {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, month);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateLabel(myCalendar, startEdit);
-        };
-
-        DatePickerDialog.OnDateSetListener endDate = (view, year, month, dayOfMonth) -> {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, month);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateLabel(myCalendar, endEdit);
-        };
-
-        startEdit.setOnClickListener(v -> {
-            new DatePickerDialog(AddAssessment.this, startDate, myCalendar
-                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            updateLabel(myCalendar, startEdit);
-        });
-
-        endEdit.setOnClickListener(v -> {
-            new DatePickerDialog(AddAssessment.this, endDate, myCalendar
-                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-        });
     }
 
     @Override
@@ -160,7 +160,7 @@ public class AddAssessment extends AppCompatActivity {
         }
     }
 
-    private void updateLabel(Calendar myCalendar, EditText editText) {
+    private void updateEditText(Calendar myCalendar, EditText editText) {
         String myFormat = "MM/dd/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         editText.setText(sdf.format(myCalendar.getTime()));
