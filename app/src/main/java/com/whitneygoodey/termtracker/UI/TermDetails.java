@@ -178,8 +178,21 @@ public class TermDetails extends AppCompatActivity {
         start.setText(term.getStartDate());
         end.setText(term.getEndDate());
 
-        //set RecyclerView and CourseAdapter
         List<Course> courseList = repository.getTermCourses(term.getID());
+        //count credits and set on screen
+        int totalCredits = 0;
+        int completedCredits = 0;
+        for (Course course : courseList) {
+            totalCredits += course.getCredits();
+            if (course.getStatus().equals(Course.Status.COMPLETED)) {
+                completedCredits+=course.getCredits();
+            }
+        }
+        TextView credits = findViewById(R.id.creditsMessage);
+        String creditsMessage = getApplicationContext().getString(R.string.completedCredits, completedCredits, totalCredits);
+        credits.setText(creditsMessage);
+
+        //set RecyclerView and CourseAdapter
         RecyclerView recyclerView = findViewById(R.id.courseRecyclerView);
         final CourseAdapter courseAdapter = new CourseAdapter(this);
         recyclerView.setAdapter(courseAdapter);

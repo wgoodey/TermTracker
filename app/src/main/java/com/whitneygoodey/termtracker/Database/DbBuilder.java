@@ -14,7 +14,7 @@ import com.whitneygoodey.termtracker.Entities.Course;
 import com.whitneygoodey.termtracker.Entities.Term;
 
 @Database(
-        entities = {Term.class, Course.class, Assessment.class}, version = 1, exportSchema = false)
+        entities = {Term.class, Course.class, Assessment.class}, version = 2, exportSchema = false)
 public abstract class DbBuilder extends RoomDatabase {
 
     public abstract TermDao termDao();

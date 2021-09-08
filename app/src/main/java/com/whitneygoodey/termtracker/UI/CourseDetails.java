@@ -116,6 +116,7 @@ public class CourseDetails extends AppCompatActivity {
                 courseDetails.append(course.getTitle());
                 //fill in the rest of the details
                 courseDetails.append("\nStatus: ").append(course.getStatus())
+                        .append("\nCredits: ").append(course.getCredits())
                         .append("\nStart Date: ").append(course.getStartDate())
                         .append("\nEnd Date: ").append(course.getEndDate())
                         .append("\n\nInstructor")
@@ -182,11 +183,14 @@ public class CourseDetails extends AppCompatActivity {
     }
 
     private void setCourseDetailsOnScreen(Course course) {
-        //get views
+        //get views and set text values
+        //set course title, status, credits, start and end info on screen
         TextView title = findViewById(R.id.editCourseTitle);
         title.setText(course.getTitle());
         TextView status = findViewById(R.id.statusSpinner);
         status.setText(course.getStatus().toString());
+        TextView credits = findViewById(R.id.textCredits);
+        credits.setText(String.valueOf(course.getCredits()));
         TextView start = findViewById(R.id.textStartDate);
         start.setText(course.getStartDate());
         TextView end = findViewById(R.id.textEndDate);

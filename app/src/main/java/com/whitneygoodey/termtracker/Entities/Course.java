@@ -9,6 +9,7 @@ public class Course {
     @PrimaryKey(autoGenerate = true)
     private int ID;
     private int termID;
+    private int credits;
     private String title;
     private Status status;
     private String startDate;
@@ -39,11 +40,12 @@ public class Course {
     }
 
     @Ignore
-    public Course(int ID, int termID, String title, Status status, String startDate, String endDate, String instructorName, String instructorEmail, String instructorPhone, String note) {
+    public Course(int ID, int termID, String title, Status status, int credits, String startDate, String endDate, String instructorName, String instructorEmail, String instructorPhone, String note) {
         this.ID = ID;
         this.termID = termID;
         this.title = title;
         this.status = status;
+        this.credits = credits;
         this.startDate = startDate;
         this.endDate = endDate;
         this.instructorName = instructorName;
@@ -52,10 +54,11 @@ public class Course {
         this.note = note;
     }
 
-    public Course(int termID, String title, Status status, String startDate, String endDate, String instructorName, String instructorEmail, String instructorPhone, String note) {
+    public Course(int termID, String title, Status status, int credits, String startDate, String endDate, String instructorName, String instructorEmail, String instructorPhone, String note) {
         this.termID = termID;
         this.title = title;
         this.status = status;
+        this.credits = credits;
         this.startDate = startDate;
         this.endDate = endDate;
         this.instructorName = instructorName;
@@ -124,6 +127,14 @@ public class Course {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
+
+    public void setCredits(int credits) {
+        this.credits = credits;
     }
 
     public String getInstructorName() {

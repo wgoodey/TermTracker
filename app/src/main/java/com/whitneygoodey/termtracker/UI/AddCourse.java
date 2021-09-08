@@ -27,6 +27,7 @@ public class AddCourse extends AppCompatActivity {
     Course course;
     Repository repository;
     EditText titleEdit;
+    EditText creditsEdit;
     EditText startEdit;
     EditText endEdit;
     EditText nameEdit;
@@ -46,6 +47,7 @@ public class AddCourse extends AppCompatActivity {
         repository = new Repository(getApplication());
 
         titleEdit = findViewById(R.id.editCourseTitle);
+        creditsEdit = findViewById(R.id.editCredits);
         startEdit = findViewById(R.id.editStartDate);
         endEdit = findViewById(R.id.editEndDate);
         nameEdit = findViewById(R.id.editName);
@@ -102,6 +104,7 @@ public class AddCourse extends AppCompatActivity {
             course = repository.getCourse(id);
 
             titleEdit.setText(course.getTitle());
+            creditsEdit.setText(String.valueOf(course.getCredits()));
             startEdit.setText(course.getStartDate());
             endEdit.setText(course.getEndDate());
             nameEdit.setText(course.getInstructorName());
@@ -161,6 +164,7 @@ public class AddCourse extends AppCompatActivity {
     public void saveCourse() {
         String title;
         Course.Status status;
+        int credits;
         String startDate;
         String endDate;
         String name;
@@ -170,6 +174,7 @@ public class AddCourse extends AppCompatActivity {
 
         //get details from the screen
         title = titleEdit.getText().toString();
+        credits = Integer.parseInt(creditsEdit.getText().toString());
         startDate = startEdit.getText().toString();
         endDate = endEdit.getText().toString();
         name = nameEdit.getText().toString();
@@ -198,11 +203,11 @@ public class AddCourse extends AppCompatActivity {
         //check if new course or not
         if (id == -1) {
             //create new course without id and insert into database
-            course = new Course(termID, title, status, startDate, endDate, name, email, phone, note);
+            course = new Course(termID, title, status, credits, startDate, endDate, name, email, phone, note);
             repository.insert(course);
         } else {
             //create new course with existing id and update in database
-            course = new Course(id, termID, title, status, startDate, endDate, name, email, phone, note);
+            course = new Course(id, termID, title, status, credits, startDate, endDate, name, email, phone, note);
             repository.update(course);
         }
     }
