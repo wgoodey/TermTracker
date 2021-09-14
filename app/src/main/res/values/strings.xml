@@ -44,4 +44,5 @@
     <string name="track">Track</string>
     <string name="credits">Credits:</string>
     <string name="completedCredits">Completed Credits: %1d\/%2d</string>
+    <string name="sign_in">Sign In</string>
 </resources>

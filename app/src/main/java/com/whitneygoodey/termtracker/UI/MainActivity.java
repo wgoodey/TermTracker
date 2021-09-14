@@ -3,7 +3,8 @@ package com.whitneygoodey.termtracker.UI;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import com.whitneygoodey.termtracker.Database.Repository;
 import com.whitneygoodey.termtracker.Entities.Assessment;
 import com.whitneygoodey.termtracker.Entities.Course;
 import com.whitneygoodey.termtracker.Entities.Term;
+import com.whitneygoodey.termtracker.Entities.User;
 import com.whitneygoodey.termtracker.R;
 
 import java.time.LocalDate;
@@ -19,11 +21,13 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     public static int numAlert;
+    public static int userID;
 
 
     @Override
@@ -31,13 +35,38 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Repository repository = new Repository(getApplication());
-
 //        setTempData(repository);
+
+        List<User> userList = repository.getAllUsers();
+
+        EditText userEdit = findViewById(R.id.editUser);
+        EditText passEdit = findViewById(R.id.editPassword);
+        Button button = findViewById(R.id.button);
+
+        button.setOnClickListener(v -> {
+            String email = userEdit.getText().toString();
+            String password = passEdit.getText().toString();
+
+            //TODO add checks for email and password
+            //if credentials match load terms
+
+            for (User current : userList) {
+                if (email.equals(current.getEmail())) {
+                    if (password.equals(current.getPassword())) {
+                        userID = current.getID();
+                        loadTerms();
+                    }
+                } else {
+                    //else warn of mismatch
+                }
+            }
+        });
+
     }
 
-    public void loadTerms(View view) {
+    //TODO: add userID parameter
+    public void loadTerms() {
         Intent intent = new Intent(MainActivity.this, TermList.class);
         startActivity(intent);
     }
@@ -45,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
     private void setTempData(Repository repository) {
 
         //create temporary data
+        User admin = new User (1, "admin", "admin");
+        User testUser = new User (2, "test", "test");
+
         Term term1 = new Term("Term 1", "10/01/2021", "03/31/2022");
         Term term2 = new Term("Term 2", "04/01/2022", "09/30/2021");
         Course course1 = new Course(1,"Fundamentals of Woodworking", Course.Status.ENROLLED, 3,"04/01/2021", "05/23/2021", "Bob Vila", "bob@vila.com", "123-456-7890", "This is a long note that has no meaning other than to fill space in the view and hopefully demonstrate some wrapping.");
@@ -53,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
         Assessment assessment2 = new Assessment(2, "Assessment 2", "10/23/2021", "10/23/2021", "Students will show competence in the basics of scuba diving while demonstrating proper safety and technique.", Assessment.Type.OBJECTIVE);
 
         //insert temporary data
+        repository.insert(testUser);
+        repository.insert(admin);
+
         repository.insert(term1);
         repository.insert(term2);
         repository.insert(course1);

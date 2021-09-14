@@ -7,23 +7,22 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.whitneygoodey.termtracker.Entities.Term;
+import com.whitneygoodey.termtracker.Entities.User;
 
 import java.util.List;
 
 @Dao
-public interface TermDao {
+public interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(Term term);
+    void insert(User user);
 
     @Update
-    void update(Term term);
+    void update(User user);
 
     @Delete
-    void delete(Term term);
+    void delete(User user);
 
-    @Query("SELECT * FROM term_table ORDER BY ID ASC")
-    List<Term> getAllTerms();
-
+    @Query("SELECT * FROM user_table ORDER BY ID ASC")
+    List<User> getAllUsers();
 }
