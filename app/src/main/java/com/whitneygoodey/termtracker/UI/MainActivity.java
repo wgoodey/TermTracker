@@ -26,8 +26,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+    public static final int ADMIN_ID = 1;
+    private static int userID = -1;
     public static int numAlert;
-    public static int userID;
 
 
     @Override
@@ -48,17 +49,16 @@ public class MainActivity extends AppCompatActivity {
             String email = userEdit.getText().toString();
             String password = passEdit.getText().toString();
 
-            //TODO add checks for email and password
-            //if credentials match load terms
-
-            for (User current : userList) {
-                if (email.equals(current.getEmail())) {
-                    if (password.equals(current.getPassword())) {
-                        userID = current.getID();
+            for (User currentUser : userList) {
+                if (email.equals(currentUser.getEmail())) {
+                    if (password.equals(currentUser.getPassword())) {
+                        //if credentials match set currentUser and load terms
+                        setCurrentUserID(currentUser.getID());
                         loadTerms();
                     }
                 } else {
                     //else warn of mismatch
+                    Toast.makeText(getApplicationContext(), "Invalid credentials.", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -77,12 +77,12 @@ public class MainActivity extends AppCompatActivity {
         User admin = new User (1, "admin", "admin");
         User testUser = new User (2, "test", "test");
 
-        Term term1 = new Term("Term 1", "10/01/2021", "03/31/2022");
-        Term term2 = new Term("Term 2", "04/01/2022", "09/30/2021");
-        Course course1 = new Course(1,"Fundamentals of Woodworking", Course.Status.ENROLLED, 3,"04/01/2021", "05/23/2021", "Bob Vila", "bob@vila.com", "123-456-7890", "This is a long note that has no meaning other than to fill space in the view and hopefully demonstrate some wrapping.");
-        Course course2 = new Course(2,"Fundamentals of Scuba", Course.Status.PLANNED, 5,"10/01/2022", "10/23/2022", "Jacques Cousteau", "jacques@cousteau.com", "123-456-7890", "This is a long note that has no meaning other than to fill space in the view and hopefully demonstrate some wrapping.");
-        Assessment assessment1 = new Assessment(1, "Assessment 1", "10/23/2021", "10/23/2021", "Students will show competence in the basics of woodworking while demonstrating proper safety and technique.", Assessment.Type.PERFORMANCE);
-        Assessment assessment2 = new Assessment(2, "Assessment 2", "10/23/2021", "10/23/2021", "Students will show competence in the basics of scuba diving while demonstrating proper safety and technique.", Assessment.Type.OBJECTIVE);
+        Term term1 = new Term(1, "Term 1", "10/01/2021", "03/31/2022");
+        Term term2 = new Term(1, "Term 2", "04/01/2022", "09/30/2021");
+        Course course1 = new Course(1, 1,"Fundamentals of Woodworking", Course.Status.ENROLLED, 3,"04/01/2021", "05/23/2021", "Bob Vila", "bob@vila.com", "123-456-7890", "This is a long note that has no meaning other than to fill space in the view and hopefully demonstrate some wrapping.");
+        Course course2 = new Course(2, 2,"Fundamentals of Scuba", Course.Status.PLANNED, 5,"10/01/2022", "10/23/2022", "Jacques Cousteau", "jacques@cousteau.com", "123-456-7890", "This is a long note that has no meaning other than to fill space in the view and hopefully demonstrate some wrapping.");
+        Assessment assessment1 = new Assessment(1, 1, "Assessment 1", "10/23/2021", "10/23/2021", "Students will show competence in the basics of woodworking while demonstrating proper safety and technique.", Assessment.Type.PERFORMANCE);
+        Assessment assessment2 = new Assessment(1, 2, "Assessment 2", "10/23/2021", "10/23/2021", "Students will show competence in the basics of scuba diving while demonstrating proper safety and technique.", Assessment.Type.OBJECTIVE);
 
         //insert temporary data
         repository.insert(testUser);
@@ -130,5 +130,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return validity;
+    }
+
+    public static int getCurrentUserID() {
+        return userID;
+    }
+
+    private void setCurrentUserID(int ID) {
+        userID = ID;
     }
 }

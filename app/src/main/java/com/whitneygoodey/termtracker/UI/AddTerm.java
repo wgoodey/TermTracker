@@ -20,6 +20,7 @@ import java.util.Objects;
 
 public class AddTerm extends AppCompatActivity {
 
+    int currentUserID = MainActivity.getCurrentUserID();
     int id;
     Term term;
     Repository repository;
@@ -124,11 +125,11 @@ public class AddTerm extends AppCompatActivity {
         String endDate = endEdit.getText().toString();
 
         if (id == -1) {
-            term = new Term(title, startDate, endDate);
+            term = new Term(currentUserID, title, startDate, endDate);
             repository.insert(term);
 
         } else {
-            term = new Term(id, title, startDate, endDate);
+            term = new Term(id, currentUserID, title, startDate, endDate);
             repository.update(term);
         }
     }

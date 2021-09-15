@@ -8,6 +8,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.whitneygoodey.termtracker.Entities.Course;
+import com.whitneygoodey.termtracker.Entities.Term;
 
 import java.util.List;
 
@@ -26,7 +27,13 @@ public interface CourseDao {
     @Query("SELECT * FROM course_table ORDER BY ID ASC")
     List<Course> getAllCourses();
 
-    @Query("DELETE FROM course_table")
-    void deleteAllCourses();
+    @Query("SELECT * FROM course_table WHERE ownerID = :owner ORDER BY ID ASC")
+    List<Course> getUserCourses(int owner);
+
+    @Query("SELECT * FROM course_table WHERE termID = :term ORDER BY ID ASC")
+    List<Course> getTermCourses(int term);
+
+    @Query("SELECT * FROM course_table WHERE ID = :courseID")
+    Term getCourse(int courseID);
 
 }

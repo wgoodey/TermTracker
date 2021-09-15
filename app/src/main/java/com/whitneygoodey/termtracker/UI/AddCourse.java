@@ -22,6 +22,7 @@ import java.util.Objects;
 
 public class AddCourse extends AppCompatActivity {
 
+    int currentUserID = MainActivity.getCurrentUserID();
     int id;
     int termID;
     Course course;
@@ -203,11 +204,11 @@ public class AddCourse extends AppCompatActivity {
         //check if new course or not
         if (id == -1) {
             //create new course without id and insert into database
-            course = new Course(termID, title, status, credits, startDate, endDate, name, email, phone, note);
+            course = new Course(currentUserID, termID, title, status, credits, startDate, endDate, name, email, phone, note);
             repository.insert(course);
         } else {
             //create new course with existing id and update in database
-            course = new Course(id, termID, title, status, credits, startDate, endDate, name, email, phone, note);
+            course = new Course(id, currentUserID, termID, title, status, credits, startDate, endDate, name, email, phone, note);
             repository.update(course);
         }
     }

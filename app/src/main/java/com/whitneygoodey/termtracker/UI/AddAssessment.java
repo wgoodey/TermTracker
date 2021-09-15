@@ -23,6 +23,7 @@ public class AddAssessment extends AppCompatActivity {
 
     int id;
     int courseID;
+    int currentUserID = MainActivity.getCurrentUserID();
     Assessment assessment;
     Repository repository;
     EditText titleEdit;
@@ -151,11 +152,11 @@ public class AddAssessment extends AppCompatActivity {
 
         if (id == -1) {
             //create new assessment without id and insert into database
-            assessment = new Assessment(courseID, title, startDate, endDate, description, type);
+            assessment = new Assessment(currentUserID, courseID, title, startDate, endDate, description, type);
             repository.insert(assessment);
         } else {
             //create new assessment with existing id and update in database
-            assessment = new Assessment(id, courseID, title, startDate, endDate, description, type);
+            assessment = new Assessment(id, currentUserID, courseID, title, startDate, endDate, description, type);
             repository.update(assessment);
         }
     }

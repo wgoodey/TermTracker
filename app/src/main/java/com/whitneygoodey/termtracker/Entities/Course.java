@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey;
 public class Course {
     @PrimaryKey(autoGenerate = true)
     private int ID;
+    private int ownerID;
     private int termID;
     private int credits;
     private String title;
@@ -40,8 +41,9 @@ public class Course {
     }
 
     @Ignore
-    public Course(int ID, int termID, String title, Status status, int credits, String startDate, String endDate, String instructorName, String instructorEmail, String instructorPhone, String note) {
+    public Course(int ID, int ownerID, int termID, String title, Status status, int credits, String startDate, String endDate, String instructorName, String instructorEmail, String instructorPhone, String note) {
         this.ID = ID;
+        this.ownerID = ownerID;
         this.termID = termID;
         this.title = title;
         this.status = status;
@@ -54,7 +56,8 @@ public class Course {
         this.note = note;
     }
 
-    public Course(int termID, String title, Status status, int credits, String startDate, String endDate, String instructorName, String instructorEmail, String instructorPhone, String note) {
+    public Course(int ownerID, int termID, String title, Status status, int credits, String startDate, String endDate, String instructorName, String instructorEmail, String instructorPhone, String note) {
+        this.ownerID = ownerID;
         this.termID = termID;
         this.title = title;
         this.status = status;
@@ -87,6 +90,14 @@ public class Course {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public int getOwnerID() {
+        return ownerID;
+    }
+
+    public void setOwnerID(int ownerID) {
+        this.ownerID = ownerID;
     }
 
     public int getTermID() {

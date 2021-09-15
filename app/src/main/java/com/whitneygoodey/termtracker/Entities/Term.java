@@ -12,17 +12,20 @@ public class Term {
     private String title;
     private String startDate;
     private String endDate;
+    private int ownerID;
 
     @Ignore
-    public Term(int ID, String title, String startDate, String endDate) {
+    public Term(int ID, int ownerID, String title, String startDate, String endDate) {
         this.ID = ID;
+        this.ownerID = ownerID;
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
 
-    public Term(String title, String startDate, String endDate) {
+    public Term(int ownerID, String title, String startDate, String endDate) {
+        this.ownerID = ownerID;
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -44,6 +47,14 @@ public class Term {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public int getOwnerID() {
+        return ownerID;
+    }
+
+    public void setOwnerID(int ownerID) {
+        this.ownerID = ownerID;
     }
 
     public String getTitle() {

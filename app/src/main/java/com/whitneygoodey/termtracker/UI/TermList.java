@@ -58,7 +58,7 @@ public class TermList extends AppCompatActivity {
 
     public void setTermList() {
         repository = new Repository(getApplication());
-        List<Term> allTerms = repository.getAllTerms();
+        List<Term> allTerms = repository.getAllTerms(MainActivity.getCurrentUserID());
         RecyclerView recyclerView = findViewById(R.id.termRecyclerView);
 
         final TermAdapter termAdapter = new TermAdapter(this);

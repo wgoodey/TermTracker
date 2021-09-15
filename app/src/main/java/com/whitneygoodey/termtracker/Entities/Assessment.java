@@ -9,6 +9,7 @@ public class Assessment {
 
     @PrimaryKey(autoGenerate = true)
     private int ID;
+    private int ownerID;
     private int courseID;
     private String title;
     private String startDate;
@@ -33,8 +34,9 @@ public class Assessment {
     }
 
     @Ignore
-    public Assessment(int ID, int courseID, String title, String startDate, String endDate, String description, Type type) {
+    public Assessment(int ID, int ownerID, int courseID, String title, String startDate, String endDate, String description, Type type) {
         this.ID = ID;
+        this.ownerID = ownerID;
         this.courseID = courseID;
         this.title = title;
         this.startDate = startDate;
@@ -43,7 +45,8 @@ public class Assessment {
         this.type = type;
     }
 
-    public Assessment(int courseID, String title, String startDate, String endDate, String description, Type type) {
+    public Assessment(int ownerID, int courseID, String title, String startDate, String endDate, String description, Type type) {
+        this.ownerID = ownerID;
         this.courseID = courseID;
         this.title = title;
         this.startDate = startDate;
@@ -70,6 +73,14 @@ public class Assessment {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public int getOwnerID() {
+        return ownerID;
+    }
+
+    public void setOwnerID(int ownerID) {
+        this.ownerID = ownerID;
     }
 
     public int getCourseID() {

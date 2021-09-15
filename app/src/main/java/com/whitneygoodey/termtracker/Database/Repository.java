@@ -10,6 +10,7 @@ import com.whitneygoodey.termtracker.Entities.Assessment;
 import com.whitneygoodey.termtracker.Entities.Course;
 import com.whitneygoodey.termtracker.Entities.Term;
 import com.whitneygoodey.termtracker.Entities.User;
+import com.whitneygoodey.termtracker.UI.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +18,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Repository {
-    private TermDao termDao;
-    private CourseDao courseDao;
-    private AssessmentDao assessmentDao;
-    private UserDao userDao;
+    private final TermDao termDao;
+    private final CourseDao courseDao;
+    private final AssessmentDao assessmentDao;
+    private final UserDao userDao;
     private List<Term> allTerms;
     private List<Course> allCourses;
     private List<Assessment> allAssessments;
@@ -39,8 +40,12 @@ public class Repository {
 
 
     //Terms
-    public List<Term> getAllTerms() {
-        databaseExecutor.execute( () -> allTerms = termDao.getAllTerms());
+    public List<Term> getAllTerms(int ownerID) {
+        if (MainActivity.getCurrentUserID() == MainActivity.ADMIN_ID) {
+            databaseExecutor.execute( () -> allTerms = termDao.getAllTerms());
+        } else {
+            databaseExecutor.execute( () -> allTerms = termDao.getUserTerms(ownerID));
+        }
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -50,13 +55,23 @@ public class Repository {
     }
 
     public Term getTerm(int termID) {
-        for (Term term : getAllTerms()) {
+        for (Term term : getAllTerms(MainActivity.getCurrentUserID())) {
             if (termID == term.getID()) {
                 return term;
             }
         }
         return null;
     }
+
+    //TODO: figure out how to retrieve single term/course/assessment via DAO query
+//    public Term getTerm(int termID, int ownerID) {
+//        for (Term term : getAllTerms(ownerID)) {
+//            if (termID == term.getID()) {
+//                return term;
+//            }
+//        }
+//        return null;
+//    }
 
     public void insert(Term term) {
         databaseExecutor.execute(() -> termDao.insert(term));
@@ -88,8 +103,12 @@ public class Repository {
 
 
     //Courses
-    public List<Course> getAllCourses() {
-        databaseExecutor.execute( () -> allCourses = courseDao.getAllCourses());
+    public List<Course> getAllCourses(int ownerID) {
+        if (MainActivity.getCurrentUserID() == MainActivity.ADMIN_ID) {
+            databaseExecutor.execute( () -> allCourses = courseDao.getAllCourses());
+        } else {
+            databaseExecutor.execute( () -> allCourses = courseDao.getUserCourses(ownerID));
+        }
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -99,17 +118,17 @@ public class Repository {
     }
 
     public List<Course> getTermCourses(int termID) {
-        List<Course> termCourses = new ArrayList<>();
-        for (Course course : getAllCourses()) {
-            if (termID == course.getTermID()) {
-                termCourses.add(course);
-            }
+        databaseExecutor.execute( () -> allCourses = courseDao.getTermCourses(termID));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        return termCourses;
+        return allCourses;
     }
 
     public Course getCourse(int courseID) {
-        for (Course course : getAllCourses()) {
+        for (Course course : getAllCourses(MainActivity.getCurrentUserID())) {
             if(courseID == course.getID()) {
                 return course;
             }

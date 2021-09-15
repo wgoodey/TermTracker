@@ -26,4 +26,9 @@ public interface TermDao {
     @Query("SELECT * FROM term_table ORDER BY ID ASC")
     List<Term> getAllTerms();
 
+    @Query("SELECT * FROM term_table WHERE ownerID = :owner ORDER BY ID ASC")
+    List<Term> getUserTerms(int owner);
+
+    @Query("SELECT * FROM term_table WHERE ID = :termID")
+    Term getTerm(int termID);
 }

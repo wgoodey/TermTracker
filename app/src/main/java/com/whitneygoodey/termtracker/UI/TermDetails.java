@@ -138,7 +138,7 @@ public class TermDetails extends AppCompatActivity {
 
             case R.id.delete:
                 boolean flag = false;
-                List<Course> allCourses = repository.getAllCourses();
+                List<Course> allCourses = repository.getAllCourses(MainActivity.getCurrentUserID());
 
                 for (Course course : allCourses) {
                     if (course.getTermID() == term.getID()) {
