@@ -55,10 +55,10 @@ public class MainActivity extends AppCompatActivity {
                         //if credentials match set currentUser and load terms
                         setCurrentUserID(currentUser.getID());
                         loadTerms();
+                    } else {
+                        //else warn of mismatch
+                        Toast.makeText(getApplicationContext(), "Invalid credentials.", Toast.LENGTH_LONG).show();
                     }
-                } else {
-                    //else warn of mismatch
-                    Toast.makeText(getApplicationContext(), "Invalid credentials.", Toast.LENGTH_LONG).show();
                 }
             }
         });
