@@ -32,8 +32,7 @@ public abstract class DbBuilder extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(), DbBuilder.class, "TermTracker.db")
                             .createFromAsset("defaultData.db")
-                            //TODO: figure out why there are migration from 2 to 3 issues with new installs
-                            .fallbackToDestructiveMigrationOnDowngrade()
+                            //TODO: make sure there aren't any migration issues
                             .build();
                 }
             }

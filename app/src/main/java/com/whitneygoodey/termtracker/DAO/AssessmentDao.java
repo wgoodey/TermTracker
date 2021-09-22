@@ -30,7 +30,7 @@ public interface AssessmentDao {
     List<Assessment> getUserAssessments(int owner);
 
     @Query("SELECT * FROM assessment_table WHERE courseID = :course ORDER BY ID ASC")
-    List<Assessment> getTermCourses(int course);
+    List<Assessment> getCourseAssessments(int course);
 
     @Query("SELECT * FROM assessment_table WHERE ID = :assessmentID")
     Assessment getAssessment(int assessmentID);

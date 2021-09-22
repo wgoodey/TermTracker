@@ -61,9 +61,9 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
             String title = current.getTitle();
             String type;
             if (current.getType() == Assessment.Type.OBJECTIVE) {
-                type = ("(OA)");
+                type = "OA";
             } else {
-                type = ("(PA)");
+                type = "PA";
             }
 
             //set text in ViewHolder

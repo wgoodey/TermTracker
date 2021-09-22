@@ -17,8 +17,8 @@
     <string name="assessment_details">Assessment Details</string>
     <string name="course_details">Course Details</string>
     <string name="start_and_end_dates">%1s - %2s</string>
-    <string name="assessment_abbreviation">(%1s)</string>
-    <string name="assessment_list_title">%1s %2s</string>
+    <string name="in_parentheses">(%1s)</string>
+    <string name="assessment_list_title">%1s (%2s)</string>
     <string name="new_assessment">New assessment</string>
     <string name="description">Description:</string>
     <string name="type">Type:</string>
@@ -45,4 +45,20 @@
     <string name="credits">Credits:</string>
     <string name="completedCredits">Completed Credits: %1d\/%2d</string>
     <string name="sign_in">Sign In</string>
+    <string name="search">Search</string>
+    <string name="title_activity_search">search</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="terms">Terms</string>
+    <string name="courses">Courses</string>
+    <string name="notes">Notes</string>
 </resources>

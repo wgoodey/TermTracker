@@ -19,7 +19,7 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Course Title" />
+            tools:text="Assessment Title" />
 
         <TextView
             android:id="@+id/assessmentType"
@@ -29,7 +29,7 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/assessmentTitle"
             app:layout_constraintTop_toBottomOf="@id/assessmentTitle"
-            tools:text="Objective Assessment" />
+            tools:text="@string/objective_assessment" />
 
         <TextView
             android:id="@+id/startDateLabel"
@@ -73,6 +73,15 @@
             tools:text="12/02/2021" />
 
         <TextView
+            android:id="@+id/courseTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@id/endDateLabel"
+            app:layout_constraintTop_toBottomOf="@id/endDateLabel"
+            tools:text="(Course Title)" />
+
+        <TextView
             android:id="@+id/descriptionLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,7 +90,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/endDateLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/courseTitle" />
 
         <TextView
             android:id="@+id/textDescription"

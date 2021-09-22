@@ -38,7 +38,6 @@ public class Repository {
     }
 
 
-
     //Terms
     public List<Term> getAllTerms(int ownerID) {
         if (MainActivity.getCurrentUserID() == MainActivity.ADMIN_ID) {
@@ -166,8 +165,13 @@ public class Repository {
 
 
     //Assessments
-    public List<Assessment> getAllAssessments() {
-        databaseExecutor.execute( () -> allAssessments = assessmentDao.getAllAssessments());
+    public List<Assessment> getAllAssessments(int ownerID) {
+        if (MainActivity.getCurrentUserID() == MainActivity.ADMIN_ID) {
+            databaseExecutor.execute( () -> allAssessments = assessmentDao.getAllAssessments());
+        } else {
+            databaseExecutor.execute( () -> allAssessments = assessmentDao.getUserAssessments(ownerID));
+        }
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -178,7 +182,7 @@ public class Repository {
 
     public List<Assessment> getCourseAssessments(int courseID) {
         List <Assessment> courseAssessments = new ArrayList<>();
-        for (Assessment assessment : getAllAssessments()) {
+        for (Assessment assessment : getAllAssessments(MainActivity.getCurrentUserID())) {
             if (courseID == assessment.getCourseID()) {
                 courseAssessments.add(assessment);
             }
@@ -187,7 +191,7 @@ public class Repository {
     }
 
     public Assessment getAssessment(int assessmentID) {
-        for (Assessment assessment : getAllAssessments()) {
+        for (Assessment assessment : getAllAssessments(MainActivity.getCurrentUserID())) {
             if(assessmentID == assessment.getID()) {
                 return assessment;
             }

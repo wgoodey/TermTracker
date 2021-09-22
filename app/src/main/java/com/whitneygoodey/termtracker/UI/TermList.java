@@ -21,7 +21,6 @@ import java.util.Objects;
 public class TermList extends AppCompatActivity {
 
     private Repository repository;
-    int termID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +30,7 @@ public class TermList extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        //get all terms from the database
+        //get terms from the database
         setTermList();
     }
 
@@ -52,12 +51,19 @@ public class TermList extends AppCompatActivity {
             case R.id.refresh:
                 setTermList();
                 return true;
+
+            case R.id.search:
+                Intent intent = new Intent(TermList.this, Search.class);
+                intent.putExtra("searchType", "term");
+                startActivity(intent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void setTermList() {
         repository = new Repository(getApplication());
+        //TODO: change currentUser so that it's passed as intent extra instead?
         List<Term> allTerms = repository.getAllTerms(MainActivity.getCurrentUserID());
         RecyclerView recyclerView = findViewById(R.id.termRecyclerView);
 

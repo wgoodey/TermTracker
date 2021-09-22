@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         EditText passEdit = findViewById(R.id.editPassword);
         Button button = findViewById(R.id.button);
 
+        //TODO: figure out how to trigger login with enter key
+
         button.setOnClickListener(v -> {
             String email = userEdit.getText().toString();
             String password = passEdit.getText().toString();
@@ -65,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //TODO: add userID parameter
     public void loadTerms() {
         Intent intent = new Intent(MainActivity.this, TermList.class);
         startActivity(intent);

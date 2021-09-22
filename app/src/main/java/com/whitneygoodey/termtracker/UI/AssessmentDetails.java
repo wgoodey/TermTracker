@@ -50,6 +50,8 @@ public class AssessmentDetails extends AppCompatActivity {
         TextView type = findViewById(R.id.assessmentType);
         TextView start = findViewById(R.id.textStartDate);
         TextView end = findViewById(R.id.textEndDate);
+        //TODO: testing
+        TextView courseTitle = findViewById(R.id.courseTitle);
         TextView description = findViewById(R.id.textDescription);
 
         //set assessment info on screen
@@ -57,6 +59,8 @@ public class AssessmentDetails extends AppCompatActivity {
         type.setText(assessment.getType().toString());
         start.setText(assessment.getStartDate());
         end.setText(assessment.getEndDate());
+        //TODO: testing
+        courseTitle.setText(getString(R.string.in_parentheses, repository.getCourse(assessment.getCourseID()).getTitle()));
         description.setText(assessment.getDescription());
     }
 
@@ -141,6 +145,12 @@ public class AssessmentDetails extends AppCompatActivity {
 
             case R.id.edit:
                 editAssessment(assessment);
+                return true;
+
+            case R.id.search:
+                Intent intent = new Intent(AssessmentDetails.this, Search.class);
+                intent.putExtra("searchType", "assessment");
+                startActivity(intent);
                 return true;
 
             case R.id.delete:

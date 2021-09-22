@@ -136,6 +136,12 @@ public class TermDetails extends AppCompatActivity {
                 editTerm(term.getID());
                 return true;
 
+            case R.id.search:
+                Intent intent = new Intent(TermDetails.this, Search.class);
+                intent.putExtra("searchType", "course");
+                startActivity(intent);
+                return true;
+
             case R.id.delete:
                 boolean flag = false;
                 List<Course> allCourses = repository.getAllCourses(MainActivity.getCurrentUserID());

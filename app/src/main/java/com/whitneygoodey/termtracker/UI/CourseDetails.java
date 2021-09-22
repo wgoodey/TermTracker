@@ -163,9 +163,15 @@ public class CourseDetails extends AppCompatActivity {
                 editCourse(course);
                 return true;
 
+            case R.id.search:
+                Intent intent = new Intent(CourseDetails.this, Search.class);
+                intent.putExtra("searchType", "assessment");
+                startActivity(intent);
+                return true;
+
             case R.id.delete:
                 //if course has associated assessments, delete those.
-                List<Assessment> allAssessments = repository.getAllAssessments();
+                List<Assessment> allAssessments = repository.getAllAssessments(MainActivity.getCurrentUserID());
                 for (Assessment assessment : allAssessments) {
                     if (assessment.getCourseID() == course.getID()) {
                         repository.delete(assessment);
@@ -195,6 +201,9 @@ public class CourseDetails extends AppCompatActivity {
         start.setText(course.getStartDate());
         TextView end = findViewById(R.id.textEndDate);
         end.setText(course.getEndDate());
+        TextView termTitle = findViewById(R.id.termTitle);
+        termTitle.setText(getString(R.string.in_parentheses, repository.getTerm(course.getTermID()).getTitle()));
+
 
         //set course info on screen
         TextView name = findViewById(R.id.editName);
