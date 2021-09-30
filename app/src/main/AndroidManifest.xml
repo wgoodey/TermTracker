@@ -56,6 +56,10 @@
             android:name=".UI.AddAssessment"
             android:label="@string/add_new_assessment"
             android:parentActivityName=".UI.CourseDetails" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

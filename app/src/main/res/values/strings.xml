@@ -25,7 +25,6 @@
     <string name="objective_assessment">Objective Assessment</string>
     <string name="performance_assessment">Performance Assessment</string>
     <string name="course_note">Course note</string>
-    <string name="refresh">Refresh</string>
     <string name="notify">Notify</string>
     <string name="share">Share</string>
     <string name="edit">Edit</string>
@@ -45,7 +44,6 @@
     <string name="credits">Credits:</string>
     <string name="completedCredits">Completed Credits: %1d\/%2d</string>
     <string name="sign_in">Sign In</string>
-    <string name="search">Search</string>
     <string name="title_activity_search">search</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
@@ -61,4 +59,7 @@
     <string name="terms">Terms</string>
     <string name="courses">Courses</string>
     <string name="notes">Notes</string>
+    <string name="refresh">Refresh</string>
+    <string name="search">Search</string>
+    <string name="reports">Reports</string>
 </resources>
