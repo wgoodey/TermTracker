@@ -2,6 +2,7 @@ package com.whitneygoodey.termtracker.UI;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.whitneygoodey.termtracker.Database.Repository;
@@ -222,118 +224,31 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
         TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
 
         for (Term currentTerm : reportTerms) {
-            TextView tTerm = new TextView(this);
-            tTerm.setLayoutParams(lp);
-            tTerm.setText(currentTerm.getTitle());
-
-            TextView tCourse = new TextView(this);
-            tCourse.setLayoutParams(lp);
-            tCourse.setText("");
-
-            TextView tDates = new TextView(this);
-            tDates.setLayoutParams(lp);
-            String tDateString = context.getString(R.string.start_and_end_dates, currentTerm.getStartDate(), currentTerm.getEndDate());
-            tDates.setText(tDateString);
-
-            TextView tCredits = new TextView(this);
-            tCredits.setLayoutParams(lp);
-            tCredits.setText("");
-
-            TextView tTotal = new TextView(this);
-            tTotal.setLayoutParams(lp);
-            int totalCredits = 0;
-            for (Course currentCourse : reportCourses) {
-                if (currentCourse.getTermID() == currentTerm.getID()) {
-                    totalCredits += currentCourse.getCredits();
-                }
-            }
-            tTotal.setText(String.valueOf(totalCredits));
-
-            TextView tAssessments = new TextView(this);
-            tAssessments.setLayoutParams(lp);
-            tAssessments.setText("");
-
-            TextView tStatus = new TextView(this);
-            tStatus.setLayoutParams(lp);
-            tStatus.setText("");
-
-            TableRow termRow = new TableRow(this);
-            termRow.setLayoutParams(lp);
-            termRow.addView(tTerm);
-            termRow.addView(tCourse);
-            termRow.addView(tDates);
-            termRow.addView(tCredits);
-            termRow.addView(tTotal);
-            termRow.addView(tAssessments);
-            termRow.addView(tStatus);
-            termRow.setBackgroundColor(getResources().getColor(R.color.teal_700));
-
+            TableRow termRow = getTermRow(reportCourses, context, lp, currentTerm);
             reportTable.addView(termRow);
 
-            for (Course currentCourse : reportCourses) {
-                if (currentCourse.getTermID() == currentTerm.getID()) {
-                    TextView cTerm = new TextView(this);
-                    cTerm.setLayoutParams(lp);
-                    cTerm.setText("");
-
-                    TextView cCourse = new TextView(this);
-                    cCourse.setLayoutParams(lp);
-                    cCourse.setText(currentCourse.getTitle());
-
-                    TextView cDates = new TextView(this);
-                    cDates.setLayoutParams(lp);
-                    String cDateString = context.getString(R.string.start_and_end_dates, currentCourse.getStartDate(), currentCourse.getEndDate());
-                    cDates.setText(cDateString);
-
-                    TextView cCredits = new TextView(this);
-                    cCredits.setLayoutParams(lp);
-                    cCredits.setText(String.valueOf(currentCourse.getCredits()));
-
-                    TextView cTotal = new TextView(this);
-                    cTotal.setLayoutParams(lp);
-                    cTotal.setText("");
-
-                    TextView cAssessments = new TextView(this);
-                    cAssessments.setLayoutParams(lp);
-                    String assessments = "";
-                    for (Assessment currentAssessment : reportAssessments) {
-                        if (currentAssessment.getCourseID() == currentCourse.getID()) {
-                            if (assessments.equals("")) {
-                                if (currentAssessment.getType() == Assessment.Type.OBJECTIVE) {
-                                    assessments += "OA";
-                                } else {
-                                    assessments += "PA";
-                                }
-                            } else {
-                                if (currentAssessment.getType() == Assessment.Type.OBJECTIVE) {
-                                    assessments += ", OA";
-                                } else {
-                                    assessments += ", PA";
-                                }
-                            }
-                        }
-                        cAssessments.setText(assessments);
-                    }
-
-
-                    TextView cStatus = new TextView(this);
-                    cStatus.setLayoutParams(lp);
-                    cStatus.setText(currentCourse.getStatus().toString());
-
-                    TableRow courseRow = new TableRow(this);
-                    courseRow.setLayoutParams(lp);
-                    courseRow.addView(cTerm);
-                    courseRow.addView(cCourse);
-                    courseRow.addView(cDates);
-                    courseRow.addView(cCredits);
-                    courseRow.addView(cTotal);
-                    courseRow.addView(cAssessments);
-                    courseRow.addView(cStatus);
-                    courseRow.setBackgroundColor(getResources().getColor(R.color.teal_200));
-
-                    reportTable.addView(courseRow);
+            Boolean termHasCourses = false;
+            for (Course course : reportCourses) {
+                if (course.getTermID() == currentTerm.getID()) {
+                    termHasCourses = true;
+                    break;
                 }
             }
+
+            if (termHasCourses) {
+                for (Course currentCourse : reportCourses) {
+                    if (currentCourse.getTermID() == currentTerm.getID()) {
+                        TableRow courseRow = getCourseRow(reportAssessments, context, lp, currentCourse);
+                        reportTable.addView(courseRow);
+                    }
+                }
+            } else {
+                //create filler tableRow to show there are no courses
+                TableRow courseRow = getNoCourseRow(lp);
+                reportTable.addView(courseRow);
+
+            }
+
         }
 
     }
@@ -345,6 +260,113 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
         return scopeSpinner.getSelectedItem().toString() + ": " +
                 statusSpinner.getSelectedItem().toString() + " courses (" +
                 formatter.format(date) + ")";
+    }
+
+    @NonNull
+    private TableRow getTermRow(List<Course> reportCourses, Context context, TableRow.LayoutParams lp, Term currentTerm) {
+        TextView tTitle = new TextView(this);
+        tTitle.setLayoutParams(lp);
+        tTitle.setText(currentTerm.getTitle());
+
+        TextView tDates = new TextView(this);
+        tDates.setLayoutParams(lp);
+        String tDateString = context.getString(R.string.start_and_end_dates, currentTerm.getStartDate(), currentTerm.getEndDate());
+        tDates.setText(tDateString);
+
+        TextView tCredits = new TextView(this);
+        tCredits.setLayoutParams(lp);
+        int totalCredits = 0;
+        for (Course currentCourse : reportCourses) {
+            if (currentCourse.getTermID() == currentTerm.getID()) {
+                totalCredits += currentCourse.getCredits();
+            }
+        }
+        tCredits.setText(String.valueOf(totalCredits));
+
+        TextView tAssessments = new TextView(this);
+        tAssessments.setLayoutParams(lp);
+        tAssessments.setText("");
+
+        TextView tStatus = new TextView(this);
+        tStatus.setLayoutParams(lp);
+        tStatus.setText("");
+
+        TableRow termRow = new TableRow(this);
+        termRow.setLayoutParams(lp);
+        termRow.addView(tTitle);
+        termRow.addView(tDates);
+        termRow.addView(tCredits);
+        termRow.addView(tAssessments);
+        termRow.addView(tStatus);
+        termRow.setBackgroundColor(getResources().getColor(R.color.teal_700));
+        return termRow;
+    }
+
+    @NonNull
+    private TableRow getCourseRow(List<Assessment> reportAssessments, Context context, TableRow.LayoutParams lp, Course currentCourse) {
+        TextView cTitle = new TextView(this);
+        cTitle.setLayoutParams(lp);
+        cTitle.setText(currentCourse.getTitle());
+
+        TextView cDates = new TextView(this);
+        cDates.setLayoutParams(lp);
+        String cDateString = context.getString(R.string.start_and_end_dates, currentCourse.getStartDate(), currentCourse.getEndDate());
+        cDates.setText(cDateString);
+
+        TextView cCredits = new TextView(this);
+        cCredits.setLayoutParams(lp);
+        cCredits.setText(String.valueOf(currentCourse.getCredits()));
+
+        TextView cAssessments = new TextView(this);
+        cAssessments.setLayoutParams(lp);
+        String assessments = "";
+        for (Assessment currentAssessment : reportAssessments) {
+            if (currentAssessment.getCourseID() == currentCourse.getID()) {
+                if (assessments.equals("")) {
+                    if (currentAssessment.getType() == Assessment.Type.OBJECTIVE) {
+                        assessments += "OA";
+                    } else {
+                        assessments += "PA";
+                    }
+                } else {
+                    if (currentAssessment.getType() == Assessment.Type.OBJECTIVE) {
+                        assessments += ", OA";
+                    } else {
+                        assessments += ", PA";
+                    }
+                }
+            }
+            cAssessments.setText(assessments);
+        }
+
+
+        TextView cStatus = new TextView(this);
+        cStatus.setLayoutParams(lp);
+        cStatus.setText(currentCourse.getStatus().toString());
+
+        TableRow courseRow = new TableRow(this);
+        courseRow.setLayoutParams(lp);
+        courseRow.addView(cTitle);
+        courseRow.addView(cDates);
+        courseRow.addView(cCredits);
+        courseRow.addView(cAssessments);
+        courseRow.addView(cStatus);
+        courseRow.setBackgroundColor(getResources().getColor(R.color.teal_200));
+        return courseRow;
+    }
+
+    @NonNull
+    private TableRow getNoCourseRow(TableRow.LayoutParams lp) {
+        TextView cTitle = new TextView(this);
+        cTitle.setLayoutParams(lp);
+        cTitle.setText("No courses found");
+        cTitle.setGravity(Gravity.CENTER);
+
+        TableRow courseRow = new TableRow(this);
+        courseRow.setLayoutParams(lp);
+        courseRow.addView(cTitle);
+        courseRow.setBackgroundColor(getResources().getColor(R.color.teal_200));
+        return courseRow;
     }
 
 }

@@ -73,12 +73,7 @@
             <TextView
                 android:id="@+id/term"
                 android:layout_weight="1"
-                android:text="Term" />
-
-            <TextView
-                android:id="@+id/course"
-                android:layout_weight="1"
-                android:text="Course" />
+                android:text="Title" />
 
             <TextView
                 android:id="@+id/dates"
@@ -89,11 +84,6 @@
                 android:id="@+id/credits"
                 android:layout_weight="1"
                 android:text="Credits" />
-
-            <TextView
-                android:id="@+id/total"
-                android:layout_weight="1"
-                android:text="Total" />
 
             <TextView
                 android:id="@+id/assessments"
