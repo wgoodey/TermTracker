@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp"
+    tools:context=".UI.Reports">
+
+    <TextView
+        android:id="@+id/scopeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Scope:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/scopeSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/scopeLabel"
+        app:layout_constraintStart_toEndOf="@id/scopeLabel"
+        app:layout_constraintTop_toTopOf="@+id/scopeLabel" />
+
+    <TextView
+        android:id="@+id/statusLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/status"
+        app:layout_constraintStart_toEndOf="@id/scopeSpinner"
+        app:layout_constraintTop_toTopOf="@id/scopeLabel" />
+
+    <Spinner
+        android:id="@+id/statusSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/statusLabel"
+        app:layout_constraintStart_toEndOf="@id/statusLabel"
+        app:layout_constraintTop_toTopOf="@+id/statusLabel" />
+
+
+    <TextView
+        android:id="@+id/reportTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="@id/scopeLabel"
+        app:layout_constraintTop_toBottomOf="@id/scopeLabel"
+        tools:text="All terms: All courses (01/23/2023)" />
+
+    <TableLayout
+        android:id="@+id/reportTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:isScrollContainer="true"
+        android:scrollbars="horizontal"
+        android:shrinkColumns="*"
+        android:stretchColumns="*"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reportTitle">
+
+
+        <TableRow
+            android:id="@+id/tableHeader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/term"
+                android:layout_weight="1"
+                android:text="Term" />
+
+            <TextView
+                android:id="@+id/course"
+                android:layout_weight="1"
+                android:text="Course" />
+
+            <TextView
+                android:id="@+id/dates"
+                android:layout_weight="1"
+                android:text="Dates" />
+
+            <TextView
+                android:id="@+id/credits"
+                android:layout_weight="1"
+                android:text="Credits" />
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_weight="1"
+                android:text="Total" />
+
+            <TextView
+                android:id="@+id/assessments"
+                android:layout_weight="1"
+                android:text="OA/PA" />
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_weight="1"
+                android:text="Status" />
+
+        </TableRow>
+
+        <!--        <TableRow-->
+        <!--            android:id="@+id/templateRow"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent">-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/text1"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:text="TEST" />-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/text2"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:text="TEST" />-->
+
+        <!--            <TextView-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:text="TEST" />-->
+
+        <!--            <TextView-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:text="TEST" />-->
+
+        <!--            <TextView-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:text="TEST" />-->
+
+        <!--            <TextView-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:text="TEST" />-->
+
+        <!--            <TextView-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:text="TEST" />-->
+        <!--        </TableRow>-->
+
+    </TableLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

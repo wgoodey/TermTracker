@@ -53,9 +53,14 @@ public class TermList extends AppCompatActivity {
                 return true;
 
             case R.id.search:
-                Intent intent = new Intent(TermList.this, Search.class);
-                intent.putExtra("searchType", "term");
-                startActivity(intent);
+                Intent searchIntent = new Intent(TermList.this, Search.class);
+                searchIntent.putExtra("searchType", "term");
+                startActivity(searchIntent);
+                return true;
+
+            case R.id.reports:
+                Intent reportsIntent = new Intent(TermList.this, Reports.class);
+                startActivity(reportsIntent);
                 return true;
         }
         return super.onOptionsItemSelected(item);

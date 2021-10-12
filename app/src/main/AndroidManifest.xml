@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TermTracker">
         <activity
+            android:name=".UI.Reports"
+            android:exported="true" />
+        <activity
             android:name=".UI.Search"
             android:exported="true" />
         <activity
