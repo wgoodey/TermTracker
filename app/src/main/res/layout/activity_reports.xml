@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="Scope:"
+        android:text="Scope"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,7 +29,7 @@
         android:id="@+id/statusLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/status"
+        android:text="Status"
         app:layout_constraintStart_toEndOf="@id/scopeSpinner"
         app:layout_constraintTop_toTopOf="@id/scopeLabel" />
 
@@ -65,73 +65,44 @@
         app:layout_constraintTop_toBottomOf="@id/reportTitle">
 
 
-        <TableRow
-            android:id="@+id/tableHeader"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+<!--        <TableRow-->
+<!--            android:id="@+id/tableHeader"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="#BDAA46"-->
+<!--            android:weightSum="100">-->
 
-            <TextView
-                android:id="@+id/term"
-                android:layout_weight="1"
-                android:text="Title" />
+<!--            <TextView-->
+<!--                android:id="@+id/tableTitle"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="30"-->
+<!--                android:text="Title" />-->
 
-            <TextView
-                android:id="@+id/dates"
-                android:layout_weight="1"
-                android:text="Dates" />
+<!--            <TextView-->
+<!--                android:id="@+id/tableDates"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="25"-->
+<!--                android:text="Dates" />-->
 
-            <TextView
-                android:id="@+id/credits"
-                android:layout_weight="1"
-                android:text="Credits" />
+<!--            <TextView-->
+<!--                android:id="@+id/tableCredits"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="15"-->
+<!--                android:text="Credits" />-->
 
-            <TextView
-                android:id="@+id/assessments"
-                android:layout_weight="1"
-                android:text="OA/PA" />
+<!--            <TextView-->
+<!--                android:id="@+id/tableAssessments"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="15"-->
+<!--                android:text="OA/PA" />-->
 
-            <TextView
-                android:id="@+id/status"
-                android:layout_weight="1"
-                android:text="Status" />
+<!--            <TextView-->
+<!--                android:id="@+id/tableStatus"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="15"-->
+<!--                android:text="Status" />-->
 
-        </TableRow>
-
-        <!--        <TableRow-->
-        <!--            android:id="@+id/templateRow"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent">-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/text1"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:text="TEST" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/text2"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:text="TEST" />-->
-
-        <!--            <TextView-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:text="TEST" />-->
-
-        <!--            <TextView-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:text="TEST" />-->
-
-        <!--            <TextView-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:text="TEST" />-->
-
-        <!--            <TextView-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:text="TEST" />-->
-
-        <!--            <TextView-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:text="TEST" />-->
-        <!--        </TableRow>-->
+<!--        </TableRow>-->
 
     </TableLayout>
 

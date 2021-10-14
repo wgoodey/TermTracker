@@ -68,6 +68,7 @@
                 android:ems="10"
                 android:inputType="textEmailAddress"
                 android:minHeight="48dp"
+                android:text="admin"
                 app:layout_constraintBottom_toBottomOf="@id/userLabel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/userLabel" />
@@ -99,6 +100,7 @@
                 android:ems="10"
                 android:inputType="textPassword"
                 android:minHeight="48dp"
+                android:text="admin"
                 app:layout_constraintBottom_toBottomOf="@id/passLabel"
                 app:layout_constraintStart_toEndOf="@id/passLabel"
                 app:layout_constraintTop_toTopOf="@id/passLabel" />

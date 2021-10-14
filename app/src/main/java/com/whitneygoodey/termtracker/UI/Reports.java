@@ -2,7 +2,7 @@ package com.whitneygoodey.termtracker.UI;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,15 +35,16 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
 
 
     private List<Term> allTerms;
-    private List<Term> reportTerms;
     private List<Course> allCourses;
-    private List<Course> reportCourses;
     private List<Assessment> allAssessments;
+
+    private List<Term> reportTerms;
+    private List<Course> reportCourses;
     private List<Assessment> reportAssessments;
 
     int currentUserID = MainActivity.getCurrentUserID();
-    private Boolean reportAllTerms;
-    private Boolean reportAllStatuses;
+    private boolean reportAllTerms;
+    private boolean reportAllStatuses;
     private int termID;
     private Course.Status status;
 
@@ -52,6 +53,14 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
     private Spinner statusSpinner;
     private TextView title;
     private TableLayout reportTable;
+
+    private TableRow tableRow;
+    private TextView tableTitle;
+    private TextView tableDates;
+    private TextView tableCredits;
+    private TextView tableAssessments;
+    private TextView tableStatus;
+
 
     //TODO: match view spacing in reports screen to the other screens.
 
@@ -66,11 +75,6 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
         Context context = getApplicationContext();
         Repository repository = new Repository(getApplication());
 
-        reportAllTerms = true;
-        reportAllStatuses = true;
-        termID = -1;
-        status = null;
-
         //TODO: figure out how to run in the background
         allTerms = repository.getAllTerms(currentUserID);
         allCourses = repository.getAllCourses(currentUserID);
@@ -80,6 +84,10 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
         statusSpinner = findViewById(R.id.statusSpinner);
         title = findViewById(R.id.reportTitle);
         reportTable = findViewById(R.id.reportTable);
+        reportTable.addView(LayoutInflater.from(this).inflate(R.layout.table_header, null));
+
+
+        //TODO: test getting last child view and changing the elements
 
         //set scope spinner list
         List<String> termList = new ArrayList<>();
@@ -89,7 +97,6 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
         }
         scopeSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, termList));
         scopeSpinner.setSelection(0);
-
 
         //set status spinner list
         List<String> statusList = new ArrayList<>();
@@ -104,9 +111,62 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
         scopeSpinner.setOnItemSelectedListener(this);
         statusSpinner.setOnItemSelectedListener(this);
 
-        filterLists();
-        buildTable(reportTerms, reportCourses, reportAssessments);
-        title.setText(buildTitle());
+        if (savedInstanceState == null) {
+            reportAllTerms = true;
+            reportAllStatuses = true;
+            termID = -1;
+            status = null;
+        } else {
+            reportAllTerms = savedInstanceState.getBoolean("AllTerms");
+            reportAllStatuses = savedInstanceState.getBoolean("AllStatuses");
+            termID = savedInstanceState.getInt("TermID");
+            switch (savedInstanceState.getString("Status")) {
+                case "Planned":
+                    status = Course.Status.PLANNED;
+                    break;
+                case "Enrolled":
+                    status = Course.Status.ENROLLED;
+                    break;
+                case "In Progress":
+                    status = Course.Status.PROGRESS;
+                    break;
+                case "Completed":
+                    status = Course.Status.COMPLETED;
+                    break;
+                case "Dropped":
+                    status = Course.Status.DROPPED;
+                    break;
+                default:
+                    status = null;
+            }
+
+
+
+//            filterLists();
+//            buildTable(reportTerms, reportCourses, reportAssessments);
+//            title.setText(buildTitle());
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        //get scope and status settings
+        boolean allTerms = reportAllTerms;
+        boolean allStatuses = reportAllStatuses;
+        int term = termID;
+        String statusSetting;
+        if (status != null) {
+            statusSetting = status.toString();
+        } else {
+            statusSetting = "All";
+        }
+
+        savedInstanceState.putBoolean("AllTerms", allTerms);
+        savedInstanceState.putBoolean("AllStatuses", allStatuses);
+        savedInstanceState.putInt("TermID", term);
+        savedInstanceState.putString("Status", statusSetting);
+
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
@@ -125,7 +185,7 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
 
             case R.id.save:
                 filterLists();
-                buildTable(reportTerms, reportCourses, reportAssessments);
+                buildTable(reportTable, reportTerms, reportCourses, reportAssessments);
                 title.setText(buildTitle());
                 return true;
         }
@@ -192,7 +252,6 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
         Predicate<Course> byCourseTerm = course -> course.getTermID() == termID;
         Predicate<Course> byStatus = course -> course.getStatus().equals(status);
 
-
         if (reportAllTerms) {
             //add all Terms, Courses, and Assessments
             reportTerms.addAll(allTerms);
@@ -215,19 +274,29 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
         }
     }
 
-    private void buildTable(List<Term> reportTerms, List<Course> reportCourses, List<Assessment> reportAssessments) {
+    @NonNull
+    private String buildTitle() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date date = new Date();
+
+        return scopeSpinner.getSelectedItem().toString() + ": " +
+               statusSpinner.getSelectedItem().toString() + " courses (" +
+               formatter.format(date) + ")";
+    }
+
+    private void buildTable(@NonNull TableLayout reportTable, List<Term> reportTerms, List<Course> reportCourses, List<Assessment> reportAssessments) {
         //TODO: figure out how to keep it from clearing the table when switching orientation
 
         Context context = getApplicationContext();
 
-        reportTable.removeViews(1, reportTable.getChildCount() - 1);
-        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+        reportTable.removeViews(1, reportTable.getChildCount()-1);
+        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 100f);
 
         for (Term currentTerm : reportTerms) {
             TableRow termRow = getTermRow(reportCourses, context, lp, currentTerm);
             reportTable.addView(termRow);
 
-            Boolean termHasCourses = false;
+            boolean termHasCourses = false;
             for (Course course : reportCourses) {
                 if (course.getTermID() == currentTerm.getID()) {
                     termHasCourses = true;
@@ -248,31 +317,39 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
                 reportTable.addView(courseRow);
 
             }
-
         }
-
     }
 
-    private String buildTitle() {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        Date date = new Date();
+    @NonNull
+    private TableRow getHeaderRow(Context context) {
+        TableRow headerRow = (TableRow) LayoutInflater.from(context).inflate(R.layout.table_header, null);
 
-        return scopeSpinner.getSelectedItem().toString() + ": " +
-                statusSpinner.getSelectedItem().toString() + " courses (" +
-                formatter.format(date) + ")";
+        tableTitle = findViewById(R.id.templateTitle);
+        tableTitle.setText("TEST");
+        tableDates = findViewById(R.id.templateDates);
+        tableCredits = findViewById(R.id.templateCredits);
+        tableAssessments = findViewById(R.id.templateAssessments);
+        tableStatus = findViewById(R.id.templateStatus);
+
+
+
+        return headerRow;
     }
 
     @NonNull
     private TableRow getTermRow(List<Course> reportCourses, Context context, TableRow.LayoutParams lp, Term currentTerm) {
+        lp.weight = 30f;
         TextView tTitle = new TextView(this);
         tTitle.setLayoutParams(lp);
         tTitle.setText(currentTerm.getTitle());
 
+        lp.weight = 25f;
         TextView tDates = new TextView(this);
         tDates.setLayoutParams(lp);
         String tDateString = context.getString(R.string.start_and_end_dates, currentTerm.getStartDate(), currentTerm.getEndDate());
         tDates.setText(tDateString);
 
+        lp.weight = 15f;
         TextView tCredits = new TextView(this);
         tCredits.setLayoutParams(lp);
         int totalCredits = 0;
@@ -283,10 +360,12 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
         }
         tCredits.setText(String.valueOf(totalCredits));
 
+        lp.weight = 15f;
         TextView tAssessments = new TextView(this);
         tAssessments.setLayoutParams(lp);
         tAssessments.setText("");
 
+        lp.weight = 15f;
         TextView tStatus = new TextView(this);
         tStatus.setLayoutParams(lp);
         tStatus.setText("");
@@ -304,19 +383,24 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
 
     @NonNull
     private TableRow getCourseRow(List<Assessment> reportAssessments, Context context, TableRow.LayoutParams lp, Course currentCourse) {
+
+        lp.weight = 30f;
         TextView cTitle = new TextView(this);
         cTitle.setLayoutParams(lp);
         cTitle.setText(currentCourse.getTitle());
 
+        lp.weight = 25f;
         TextView cDates = new TextView(this);
         cDates.setLayoutParams(lp);
         String cDateString = context.getString(R.string.start_and_end_dates, currentCourse.getStartDate(), currentCourse.getEndDate());
         cDates.setText(cDateString);
 
+        lp.weight = 15f;
         TextView cCredits = new TextView(this);
         cCredits.setLayoutParams(lp);
         cCredits.setText(String.valueOf(currentCourse.getCredits()));
 
+        lp.weight = 15f;
         TextView cAssessments = new TextView(this);
         cAssessments.setLayoutParams(lp);
         String assessments = "";
@@ -324,15 +408,15 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
             if (currentAssessment.getCourseID() == currentCourse.getID()) {
                 if (assessments.equals("")) {
                     if (currentAssessment.getType() == Assessment.Type.OBJECTIVE) {
-                        assessments += "OA";
+                        assessments = "OA";
                     } else {
-                        assessments += "PA";
+                        assessments = "PA";
                     }
                 } else {
                     if (currentAssessment.getType() == Assessment.Type.OBJECTIVE) {
-                        assessments += ", OA";
+                        assessments += "/OA";
                     } else {
-                        assessments += ", PA";
+                        assessments += "/PA";
                     }
                 }
             }
@@ -340,6 +424,7 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
         }
 
 
+        lp.weight = 15f;
         TextView cStatus = new TextView(this);
         cStatus.setLayoutParams(lp);
         cStatus.setText(currentCourse.getStatus().toString());
@@ -357,10 +442,10 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
 
     @NonNull
     private TableRow getNoCourseRow(TableRow.LayoutParams lp) {
+        lp.weight = 30f;
         TextView cTitle = new TextView(this);
         cTitle.setLayoutParams(lp);
         cTitle.setText("No courses found");
-        cTitle.setGravity(Gravity.CENTER);
 
         TableRow courseRow = new TableRow(this);
         courseRow.setLayoutParams(lp);
