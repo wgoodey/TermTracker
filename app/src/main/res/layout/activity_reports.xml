@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="15dp"
+    android:background="@color/background"
     tools:context=".UI.Reports">
 
     <TextView
         android:id="@+id/scopeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:text="Scope"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -56,7 +57,7 @@
         android:id="@+id/reportTable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_margin="15dp"
         android:isScrollContainer="true"
         android:scrollbars="horizontal"
         android:shrinkColumns="*"
@@ -65,44 +66,44 @@
         app:layout_constraintTop_toBottomOf="@id/reportTitle">
 
 
-<!--        <TableRow-->
-<!--            android:id="@+id/tableHeader"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:background="#BDAA46"-->
-<!--            android:weightSum="100">-->
+        <!--        <TableRow-->
+        <!--            android:id="@+id/tableHeader"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:background="#BDAA46"-->
+        <!--            android:weightSum="100">-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/tableTitle"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_weight="30"-->
-<!--                android:text="Title" />-->
+        <!--            <TextView-->
+        <!--                android:id="@+id/tableTitle"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_weight="30"-->
+        <!--                android:text="Title" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/tableDates"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_weight="25"-->
-<!--                android:text="Dates" />-->
+        <!--            <TextView-->
+        <!--                android:id="@+id/tableDates"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_weight="25"-->
+        <!--                android:text="Dates" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/tableCredits"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_weight="15"-->
-<!--                android:text="Credits" />-->
+        <!--            <TextView-->
+        <!--                android:id="@+id/tableCredits"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_weight="15"-->
+        <!--                android:text="Credits" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/tableAssessments"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_weight="15"-->
-<!--                android:text="OA/PA" />-->
+        <!--            <TextView-->
+        <!--                android:id="@+id/tableAssessments"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_weight="15"-->
+        <!--                android:text="OA/PA" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/tableStatus"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_weight="15"-->
-<!--                android:text="Status" />-->
+        <!--            <TextView-->
+        <!--                android:id="@+id/tableStatus"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_weight="15"-->
+        <!--                android:text="Status" />-->
 
-<!--        </TableRow>-->
+        <!--        </TableRow>-->
 
     </TableLayout>
 

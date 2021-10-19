@@ -184,6 +184,11 @@ public class CourseDetails extends AppCompatActivity {
                 toast.show();
                 this.finish();
                 return true;
+
+            case R.id.reports:
+                Intent reportsIntent = new Intent(CourseDetails.this, Reports.class);
+                startActivity(reportsIntent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

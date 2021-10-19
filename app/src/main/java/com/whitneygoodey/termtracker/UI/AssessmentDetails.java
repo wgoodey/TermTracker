@@ -159,6 +159,11 @@ public class AssessmentDetails extends AppCompatActivity {
                 toast.show();
                 this.finish();
                 return true;
+
+            case R.id.reports:
+                Intent reportsIntent = new Intent(AssessmentDetails.this, Reports.class);
+                startActivity(reportsIntent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -158,8 +158,7 @@ public class TermDetails extends AppCompatActivity {
                     String message = getApplicationContext().getString(R.string.cannot_delete_term, term.getTitle());
                     Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
                     toast.show();
-
-                    //TODO display confirmation dialog to delete a term with courses instead of just a warning toast?
+                    //TODO: display confirmation dialog to delete a term with courses instead of just a warning toast?
 
                 } else {
                     repository.delete(term);
@@ -169,8 +168,12 @@ public class TermDetails extends AppCompatActivity {
                     this.finish();
                     return true;
                 }
-
                 return false;
+
+            case R.id.reports:
+                Intent reportsIntent = new Intent(TermDetails.this, Reports.class);
+                startActivity(reportsIntent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
