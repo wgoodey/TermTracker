@@ -1,14 +1,16 @@
 package com.whitneygoodey.termtracker.UI;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private static int userID = -1;
     private FirebaseUser firebaseUser;
     public static int numAlert;
+    private Repository repository;
 
     private final View.OnClickListener clicky = new View.OnClickListener() {
         @Override
@@ -59,6 +62,12 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.signOutButton:
                     signOut();
                     break;
+                case R.id.loadTermsButton:
+                    loadTerms();
+                    break;
+                case R.id.deleteUserText:
+                    deleteUser();
+                    break;
             }
         }
     };
@@ -69,23 +78,35 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient googleSignInClient;
 
-    private EditText userEdit;
-    ImageView profilePic;
+    private TextView userTextView;
+    private TextView deleteLink;
+    private SignInButton signInButton;
+    private Button signOutButton;
+    private Button loadTermsButton;
+    private ImageView profilePic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Repository repository = new Repository(getApplication());
+        repository = new Repository(getApplication());
 //        setTempData(repository);
 
         List<User> userList = repository.getAllUsers();
 
-        SignInButton signInButton = findViewById(R.id.googleSignInButton);
-        Button signOutButton = findViewById(R.id.signOutButton);
+        signInButton = findViewById(R.id.googleSignInButton);
+        signOutButton = findViewById(R.id.signOutButton);
+        loadTermsButton = findViewById(R.id.loadTermsButton);
+        deleteLink = findViewById(R.id.deleteUserText);
+        deleteLink.setOnClickListener(clicky);
+
         signInButton.setOnClickListener(clicky);
         signOutButton.setOnClickListener(clicky);
+        loadTermsButton.setOnClickListener(clicky);
+
+        userTextView = findViewById(R.id.userTextView);
+        profilePic = findViewById(R.id.profilePic);
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -103,21 +124,25 @@ public class MainActivity extends AppCompatActivity {
                 if (listenerUser != null) {
                     firebaseUser = listenerUser;
                     updateUI(firebaseUser);
+                    boolean found = false;
                     for (User user : userList) {
                         if (firebaseUser.getEmail().equals(user.getEmail())) {
+                            found = true;
                             setCurrentUserID(user.getID());
+                            break;
                         }
                     }
-                    loadTerms();
+                    if (found && userID == -1) {
+                        User newUser = new User(firebaseUser.getEmail(), "pass");
+                        repository.insert(newUser);
+                    }
                 } else {
                     firebaseUser = null;
                     userID = -1;
+                    updateUI(null);
                 }
             }
         });
-
-        userEdit = findViewById(R.id.editUser);
-        profilePic = findViewById(R.id.profilePic);
 
 
     }
@@ -165,11 +190,11 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            updateUI(user);
+//                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            updateUI(null);
+//                            updateUI(null);
                         }
                     }
                 });
@@ -179,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
 
         //create temporary data
         User admin = new User (1, "admin", "admin");
-        User testUser = new User (2, "test", "test");
+        User testUser = new User (2, "wgoodey@wgu.edu", "test");
 
         Term term1 = new Term(1, "Term 1", "10/01/2021", "03/31/2022");
         Term term2 = new Term(1, "Term 2", "04/01/2022", "09/30/2021");
@@ -232,7 +257,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(context, "Dates must be in the format mm/dd/yyyy.", Toast.LENGTH_LONG).show();
             validity = false;
         }
-
         return validity;
     }
 
@@ -253,25 +277,103 @@ public class MainActivity extends AppCompatActivity {
 
         //Firebase sign out
         FirebaseAuth.getInstance().signOut();
-
         // Google sign out
         googleSignInClient.signOut();
-        updateUI(null);
+//        updateUI(null);
     }
 
     private void updateUI(FirebaseUser user) {
         try {
             if (user == null) {
-                userEdit.setText("No user logged in");
+                signInButton.setVisibility(View.VISIBLE);
+                loadTermsButton.setVisibility(View.GONE);
+                signOutButton.setVisibility(View.GONE);
+                userTextView.setVisibility(View.INVISIBLE);
+                deleteLink.setVisibility(View.INVISIBLE);
+
             } else {
                 Uri uri = user.getPhotoUrl();
-                userEdit.setText(user.getEmail());
+                userTextView.setText(user.getEmail());
+                signInButton.setVisibility(View.GONE);
+                userTextView.setVisibility(View.VISIBLE);
+                signOutButton.setVisibility(View.VISIBLE);
+                loadTermsButton.setVisibility(View.VISIBLE);
+                deleteLink.setVisibility(View.VISIBLE);
                 //TODO: try to get profile photo
                 profilePic.setImageURI(uri);
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
-            userEdit.setText("No user logged in");
         }
     }
+
+    private void deleteUser() {
+        int deleteKey = userID;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//        builder.setCancelable(true);
+        builder.setTitle("Confirm account deletion");
+        builder.setMessage("Are you sure you want to delete this account and remove all associated data from the database?");
+        builder.setIcon(R.drawable.ic_delete);
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                // delete user
+                //TODO: re-authenticate user?
+                String deleteMessage = firebaseUser.getEmail() + " successfully deleted";
+
+                firebaseUser.delete()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d(TAG, "User account deleted.");
+                                    googleSignInClient.signOut();
+                                    googleSignInClient.revokeAccess();
+                                    //delete user's coursework
+                                    deleteData(deleteKey);
+                                    Toast.makeText(getApplicationContext(), deleteMessage, Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog deleteDialog = builder.create();
+        deleteDialog.show();
+
+
+
+    }
+
+    private void deleteData(int owner) {
+        List<User> users = repository.getAllUsers();
+        List<Term> terms = repository.getAllTerms(owner);
+        List<Course> courses = repository.getAllCourses(owner);
+        List<Assessment> assessments = repository.getAllAssessments(owner);
+
+        for (Assessment assessment : assessments) {
+            repository.delete(assessment);
+        }
+        for (Course course : courses) {
+            repository.delete(course);
+        }
+        for (Term term : terms) {
+            repository.delete(term);
+        }
+
+        for (User user : users) {
+            if (user.getID() == owner) {
+                repository.delete(user);
+            }
+        }
+    }
+
 }

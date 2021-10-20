@@ -87,8 +87,6 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
         reportTable.addView(LayoutInflater.from(this).inflate(R.layout.table_header, null));
 
 
-        //TODO: test getting last child view and changing the elements
-
         //set scope spinner list
         List<String> termList = new ArrayList<>();
         termList.add("All terms");

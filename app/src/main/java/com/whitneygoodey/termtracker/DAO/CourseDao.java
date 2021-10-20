@@ -8,7 +8,6 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.whitneygoodey.termtracker.Entities.Course;
-import com.whitneygoodey.termtracker.Entities.Term;
 
 import java.util.List;
 
@@ -34,6 +33,6 @@ public interface CourseDao {
     List<Course> getTermCourses(int term);
 
     @Query("SELECT * FROM course_table WHERE ID = :courseID")
-    Term getCourse(int courseID);
+    Course getCourse(int courseID);
 
 }

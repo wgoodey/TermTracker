@@ -29,6 +29,8 @@ public class Repository {
     private static final int THREAD_COUNT = 4 ;
     static final ExecutorService databaseExecutor = Executors.newFixedThreadPool(THREAD_COUNT);
 
+    private Course tempCourse;
+
     public Repository(Application application) {
         DbBuilder db = DbBuilder.getDatabase(application);
         termDao = db.termDao();

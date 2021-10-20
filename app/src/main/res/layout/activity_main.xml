@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="175dp"
         android:importantForAccessibility="no"
-        app:layout_constraintBottom_toTopOf="@id/googleSignInButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,37 +22,69 @@
         android:id="@+id/googleSignInButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/signOutButton"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/profilePic"
+        app:layout_constraintStart_toStartOf="@+id/profilePic"
+        app:layout_constraintTop_toBottomOf="@id/profilePic"
+        tools:visibility="visible" />
 
 
-    <EditText
-        android:id="@+id/editUser"
+    <Button
+        android:id="@+id/loadTermsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo" />
-
+        android:text="Load Terms"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/googleSignInButton"
+        app:layout_constraintStart_toStartOf="@+id/googleSignInButton"
+        app:layout_constraintTop_toBottomOf="@id/googleSignInButton" />
 
     <Button
         android:id="@+id/signOutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sign Out"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/loadTermsButton"
+        app:layout_constraintStart_toStartOf="@+id/loadTermsButton"
+        app:layout_constraintTop_toBottomOf="@id/loadTermsButton" />
+
+    <TextView
+        android:id="@+id/userTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo"
+        tools:text="test@VFC.edu" />
+
+
+
 
     <ImageView
         android:id="@+id/profilePic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/editUser"
-        app:layout_constraintStart_toStartOf="@+id/editUser"
-        app:layout_constraintTop_toBottomOf="@+id/editUser"
+        app:layout_constraintEnd_toEndOf="@+id/userTextView"
+        app:layout_constraintStart_toStartOf="@+id/userTextView"
+        app:layout_constraintTop_toBottomOf="@+id/userTextView"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/deleteUserText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
+        android:gravity="bottom"
+        android:minHeight="48dp"
+        android:text="Delete User"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
