@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.signOutButton:
                     signOut();
                     break;
-                case R.id.loadTermsButton:
+                case R.id.userTextView:
                     loadTerms();
                     break;
                 case R.id.deleteUserText:
@@ -82,8 +81,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView deleteLink;
     private SignInButton signInButton;
     private Button signOutButton;
-    private Button loadTermsButton;
-    private ImageView profilePic;
+    private ImageView enterArrow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,25 +93,20 @@ public class MainActivity extends AppCompatActivity {
 
         List<User> userList = repository.getAllUsers();
 
+        getSupportActionBar().hide();
+
+        userTextView = findViewById(R.id.userTextView);
+        enterArrow = findViewById(R.id.enterImg);
         signInButton = findViewById(R.id.googleSignInButton);
         signOutButton = findViewById(R.id.signOutButton);
-        loadTermsButton = findViewById(R.id.loadTermsButton);
         deleteLink = findViewById(R.id.deleteUserText);
-        deleteLink.setOnClickListener(clicky);
 
         signInButton.setOnClickListener(clicky);
         signOutButton.setOnClickListener(clicky);
-        loadTermsButton.setOnClickListener(clicky);
+        userTextView.setOnClickListener(clicky);
+        deleteLink.setOnClickListener(clicky);
 
-        userTextView = findViewById(R.id.userTextView);
-        profilePic = findViewById(R.id.profilePic);
 
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client))
-                .requestEmail()
-                .build();
-        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         //initialize firebaseAuth and add authStateListener
         firebaseAuth = FirebaseAuth.getInstance();
@@ -143,6 +136,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client))
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
 
     }
@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
+                updateUI(firebaseUser);
             }
         }
     }
@@ -190,11 +191,9 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-//                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-//                            updateUI(null);
                         }
                     }
                 });
@@ -285,22 +284,18 @@ public class MainActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         try {
             if (user == null) {
+                userTextView.setText(getString(R.string.app_name));
                 signInButton.setVisibility(View.VISIBLE);
-                loadTermsButton.setVisibility(View.GONE);
                 signOutButton.setVisibility(View.GONE);
-                userTextView.setVisibility(View.INVISIBLE);
                 deleteLink.setVisibility(View.INVISIBLE);
+                enterArrow.setVisibility(View.GONE);
 
             } else {
-                Uri uri = user.getPhotoUrl();
                 userTextView.setText(user.getEmail());
                 signInButton.setVisibility(View.GONE);
-                userTextView.setVisibility(View.VISIBLE);
                 signOutButton.setVisibility(View.VISIBLE);
-                loadTermsButton.setVisibility(View.VISIBLE);
                 deleteLink.setVisibility(View.VISIBLE);
-                //TODO: try to get profile photo
-                profilePic.setImageURI(uri);
+                enterArrow.setVisibility(View.VISIBLE);
             }
         } catch (NullPointerException e) {
             e.printStackTrace();

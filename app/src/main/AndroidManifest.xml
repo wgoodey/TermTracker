@@ -10,6 +10,7 @@
         android:theme="@style/Theme.TermTracker">
         <activity
             android:name=".UI.Reports"
+            android:screenOrientation="landscape"
             android:exported="true" />
         <activity
             android:name=".UI.Search"
