@@ -10,7 +10,7 @@
         android:theme="@style/Theme.TermTracker">
         <activity
             android:name=".UI.Reports"
-            android:screenOrientation="landscape"
+            android:screenOrientation="sensorLandscape"
             android:exported="true" />
         <activity
             android:name=".UI.Search"
@@ -24,7 +24,6 @@
         <activity android:name=".UI.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -38,6 +37,7 @@
             android:parentActivityName=".UI.TermDetails" />
         <activity
             android:name=".UI.TermDetails"
+            android:label="@string/term_details"
             android:parentActivityName=".UI.TermList" />
         <activity
             android:name=".UI.AddCourse"

@@ -1,110 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:orientation="vertical"
+    android:layout_margin="15dp"
     tools:context=".UI.Reports">
 
-    <TextView
-        android:id="@+id/scopeLabel"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:text="Scope"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="horizontal">
 
-    <Spinner
-        android:id="@+id/scopeSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/scopeLabel"
-        app:layout_constraintStart_toEndOf="@id/scopeLabel"
-        app:layout_constraintTop_toTopOf="@+id/scopeLabel" />
+        <TextView
+            android:id="@+id/scopeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Scope"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/statusLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Status"
-        app:layout_constraintStart_toEndOf="@id/scopeSpinner"
-        app:layout_constraintTop_toTopOf="@id/scopeLabel" />
+        <Spinner
+            android:id="@+id/scopeSpinner"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toBottomOf="@+id/scopeLabel"
+            app:layout_constraintStart_toEndOf="@id/scopeLabel"
+            app:layout_constraintTop_toTopOf="@+id/scopeLabel" />
 
-    <Spinner
-        android:id="@+id/statusSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/statusLabel"
-        app:layout_constraintStart_toEndOf="@id/statusLabel"
-        app:layout_constraintTop_toTopOf="@+id/statusLabel" />
+        <TextView
+            android:id="@+id/statusLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Status"
+            app:layout_constraintStart_toEndOf="@id/scopeSpinner"
+            app:layout_constraintTop_toTopOf="@id/scopeLabel" />
 
+        <Spinner
+            android:id="@+id/statusSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toBottomOf="@+id/statusLabel"
+            app:layout_constraintStart_toEndOf="@id/statusLabel"
+            app:layout_constraintTop_toTopOf="@+id/statusLabel" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/reportTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        app:layout_constraintStart_toStartOf="@id/scopeLabel"
-        app:layout_constraintTop_toBottomOf="@id/scopeLabel"
         tools:text="All terms: All courses (01/23/2023)" />
 
-    <TableLayout
-        android:id="@+id/reportTable"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:isScrollContainer="true"
-        android:scrollbars="horizontal"
-        android:shrinkColumns="*"
-        android:stretchColumns="*"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/reportTitle">
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:scrollbars="vertical">
+
+        <TableLayout
+            android:id="@+id/reportTable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:shrinkColumns="*"
+            android:stretchColumns="*">
 
 
-        <!--        <TableRow-->
-        <!--            android:id="@+id/tableHeader"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:background="#BDAA46"-->
-        <!--            android:weightSum="100">-->
+            <TableRow
+                android:id="@+id/tableHeader"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/mustard"
+                android:weightSum="100">
 
-        <!--            <TextView-->
-        <!--                android:id="@+id/tableTitle"-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_weight="30"-->
-        <!--                android:text="Title" />-->
+                <TextView
+                    android:id="@+id/templateTitle"
+                    android:layout_width="0dp"
+                    android:layout_weight="30"
+                    android:text="Title" />
 
-        <!--            <TextView-->
-        <!--                android:id="@+id/tableDates"-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_weight="25"-->
-        <!--                android:text="Dates" />-->
+                <TextView
+                    android:id="@+id/templateDates"
+                    android:layout_width="0dp"
+                    android:layout_weight="25"
+                    android:text="Dates" />
 
-        <!--            <TextView-->
-        <!--                android:id="@+id/tableCredits"-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_weight="15"-->
-        <!--                android:text="Credits" />-->
+                <TextView
+                    android:id="@+id/templateCredits"
+                    android:layout_width="0dp"
+                    android:layout_weight="15"
+                    android:text="Credits" />
 
-        <!--            <TextView-->
-        <!--                android:id="@+id/tableAssessments"-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_weight="15"-->
-        <!--                android:text="OA/PA" />-->
+                <TextView
+                    android:id="@+id/templateAssessments"
+                    android:layout_width="0dp"
+                    android:layout_weight="15"
+                    android:text="OA/PA" />
 
-        <!--            <TextView-->
-        <!--                android:id="@+id/tableStatus"-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_weight="15"-->
-        <!--                android:text="Status" />-->
+                <TextView
+                    android:id="@+id/templateStatus"
+                    android:layout_width="0dp"
+                    android:layout_weight="15"
+                    android:text="Status" />
 
-        <!--        </TableRow>-->
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
 
-    </TableLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

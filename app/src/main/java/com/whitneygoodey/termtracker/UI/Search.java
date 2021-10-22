@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +29,13 @@ public class Search extends AppCompatActivity {
     List<Course> courseResultsList;
     List<Assessment> assessmentResultsList;
 
+    EditText searchBar;
+    RadioGroup searchOptions;
+    RadioButton termsOption;
+    RadioButton coursesOption;
+    RadioButton assessmentsOption;
+    RecyclerView searchResultsRecyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,16 +46,36 @@ public class Search extends AppCompatActivity {
 
         repository = new Repository(getApplication());
 
-        EditText searchBar = findViewById(R.id.editSearch);
-        RadioGroup searchOptions = findViewById(R.id.searchRadios);
-        RadioButton termsOption = findViewById(R.id.radioTerms);
-        RadioButton coursesOption = findViewById(R.id.radioCourses);
-        RadioButton assessmentsOption = findViewById(R.id.radioAssessments);
+        searchBar = findViewById(R.id.editSearch);
+        searchOptions = findViewById(R.id.searchRadios);
+        termsOption = findViewById(R.id.radioTerms);
+        coursesOption = findViewById(R.id.radioCourses);
+        assessmentsOption = findViewById(R.id.radioAssessments);
         Button searchButton = findViewById(R.id.searchButton);
-        RecyclerView searchResultsRecyclerView = findViewById(R.id.searchResultsRecyclerView);
+        searchResultsRecyclerView = findViewById(R.id.searchResultsRecyclerView);
 
-        try {
-            String searchType = getIntent().getStringExtra("searchType");
+        searchButton.setOnClickListener(v -> search(searchBar.getText().toString()));
+
+        if (savedInstanceState == null) {
+            try {
+                String searchType = getIntent().getStringExtra("searchType");
+                if (searchType.equals("course")) {
+                    coursesOption.setChecked(true);
+                } else if (searchType.equals("assessment")) {
+                    assessmentsOption.setChecked(true);
+                } else {
+                    termsOption.setChecked(true);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            String searchTerm = savedInstanceState.getString("searchTerms");
+            String searchType = savedInstanceState.getString("searchType");
+
+            searchBar.setText(searchTerm);
             if (searchType.equals("course")) {
                 coursesOption.setChecked(true);
             } else if (searchType.equals("assessment")) {
@@ -55,66 +83,71 @@ public class Search extends AppCompatActivity {
             } else {
                 termsOption.setChecked(true);
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            search(searchTerm);
         }
-
-        searchButton.setOnClickListener(v -> {
-            String searchKey = searchBar.getText().toString();
-
-            if (termsOption.isChecked()) {
-                termResultsList = searchTerms(searchKey);
-
-                //set recyclerView to load terms
-                final TermAdapter termAdapter = new TermAdapter(this);
-                searchResultsRecyclerView.setAdapter(termAdapter);
-                searchResultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-                termAdapter.setTermList(termResultsList);
-
-            } else if (coursesOption.isChecked()) {
-                courseResultsList = searchCourses(searchKey);
-
-                //set recyclerview to load courses
-                final CourseAdapter courseAdapter = new CourseAdapter(this);
-                searchResultsRecyclerView.setAdapter(courseAdapter);
-                searchResultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-                courseAdapter.setCourseList(courseResultsList);
-
-            } else {
-                assessmentResultsList = searchAssessments(searchKey);
-
-                //set recyclerView to load assessments
-                final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this);
-                searchResultsRecyclerView.setAdapter(assessmentAdapter);
-                searchResultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-                assessmentAdapter.setAssessmentList(assessmentResultsList);
-
-            }
-        });
-
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.menu, menu);
-//        return true;
-//    }
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+        String key = searchBar.getText().toString();
+        String type;
+
+        if (coursesOption.isChecked()) {
+            type = "course";
+        } else if (assessmentsOption.isChecked()) {
+            type = "assessment";
+        } else {
+            type = "term";
+        }
+
+        savedInstanceState.putString("searchTerms", key);
+        savedInstanceState.putString("searchType", type);
+        super.onSaveInstanceState(savedInstanceState);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private void search(String searchKey) {
+
+        if (termsOption.isChecked()) {
+            termResultsList = searchTerms(searchKey);
+
+            //set recyclerView to load terms
+            final TermAdapter termAdapter = new TermAdapter(this);
+            searchResultsRecyclerView.setAdapter(termAdapter);
+            searchResultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            termAdapter.setTermList(termResultsList);
+
+        } else if (coursesOption.isChecked()) {
+            courseResultsList = searchCourses(searchKey);
+
+            //set recyclerview to load courses
+            final CourseAdapter courseAdapter = new CourseAdapter(this);
+            searchResultsRecyclerView.setAdapter(courseAdapter);
+            searchResultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            courseAdapter.setCourseList(courseResultsList);
+
+        } else {
+            assessmentResultsList = searchAssessments(searchKey);
+
+            //set recyclerView to load assessments
+            final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this);
+            searchResultsRecyclerView.setAdapter(assessmentAdapter);
+            searchResultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            assessmentAdapter.setAssessmentList(assessmentResultsList);
+        }
+
+    }
+
     private List<Term> searchTerms(String key) {
         key = key.toLowerCase().trim();
-        List<Term> results = new ArrayList();
+        List<Term> results = new ArrayList<>();
         for (Term term : repository.getAllTerms(MainActivity.getCurrentUserID())) {
             String title = term.getTitle().toLowerCase().trim();
             if (title.contains(key)) {

@@ -2,7 +2,6 @@ package com.whitneygoodey.termtracker.UI;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.whitneygoodey.termtracker.Database.Repository;
 import com.whitneygoodey.termtracker.Entities.Assessment;
@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 
 public class Reports extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+    private Context context;
 
     private List<Term> allTerms;
     private List<Course> allCourses;
@@ -54,13 +55,6 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
     private TextView title;
     private TableLayout reportTable;
 
-    private TableRow tableRow;
-    private TextView tableTitle;
-    private TextView tableDates;
-    private TextView tableCredits;
-    private TextView tableAssessments;
-    private TextView tableStatus;
-
 
     //TODO: match view spacing in reports screen to the other screens.
 
@@ -72,7 +66,7 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        Context context = getApplicationContext();
+        context = getApplicationContext();
         Repository repository = new Repository(getApplication());
 
         //TODO: figure out how to run in the background
@@ -84,7 +78,6 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
         statusSpinner = findViewById(R.id.statusSpinner);
         title = findViewById(R.id.reportTitle);
         reportTable = findViewById(R.id.reportTable);
-        reportTable.addView(LayoutInflater.from(this).inflate(R.layout.table_header, null));
 
 
         //set scope spinner list
@@ -138,11 +131,9 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
                     status = null;
             }
 
-
-
-//            filterLists();
-//            buildTable(reportTerms, reportCourses, reportAssessments);
-//            title.setText(buildTitle());
+            filterLists();
+            buildTable(reportTable, reportTerms, reportCourses, reportAssessments);
+            title.setText(buildTitle());
         }
     }
 
@@ -285,13 +276,15 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
     private void buildTable(@NonNull TableLayout reportTable, List<Term> reportTerms, List<Course> reportCourses, List<Assessment> reportAssessments) {
         //TODO: figure out how to keep it from clearing the table when switching orientation
 
-        Context context = getApplicationContext();
-
-        reportTable.removeViews(1, reportTable.getChildCount()-1);
+        reportTable.removeAllViews();
         TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 100f);
 
+        //build header
+        TableRow header = getHeaderRow(lp);
+        reportTable.addView(header);
+
         for (Term currentTerm : reportTerms) {
-            TableRow termRow = getTermRow(reportCourses, context, lp, currentTerm);
+            TableRow termRow = getTermRow(reportCourses, lp, currentTerm);
             reportTable.addView(termRow);
 
             boolean termHasCourses = false;
@@ -305,13 +298,13 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
             if (termHasCourses) {
                 for (Course currentCourse : reportCourses) {
                     if (currentCourse.getTermID() == currentTerm.getID()) {
-                        TableRow courseRow = getCourseRow(reportAssessments, context, lp, currentCourse);
+                        TableRow courseRow = getCourseRow(reportAssessments, lp, currentCourse);
                         reportTable.addView(courseRow);
                     }
                 }
             } else {
                 //create filler tableRow to show there are no courses
-                TableRow courseRow = getNoCourseRow(lp);
+                TableRow courseRow = getNoCourseRow(context, lp);
                 reportTable.addView(courseRow);
 
             }
@@ -319,23 +312,47 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
     }
 
     @NonNull
-    private TableRow getHeaderRow(Context context) {
-        TableRow headerRow = (TableRow) LayoutInflater.from(context).inflate(R.layout.table_header, null);
+    private TableRow getHeaderRow(TableRow.LayoutParams lp) {
 
-        tableTitle = findViewById(R.id.templateTitle);
-        tableTitle.setText("TEST");
-        tableDates = findViewById(R.id.templateDates);
-        tableCredits = findViewById(R.id.templateCredits);
-        tableAssessments = findViewById(R.id.templateAssessments);
-        tableStatus = findViewById(R.id.templateStatus);
+        lp.weight = 30f;
+        TextView title = new TextView(this);
+        title.setLayoutParams(lp);
+        title.setText("Title");
 
+        lp.weight = 25f;
+        TextView dates = new TextView(this);
+        dates.setLayoutParams(lp);
+        dates.setText("Dates");
 
+        lp.weight = 15f;
+        TextView credits = new TextView(this);
+        credits.setLayoutParams(lp);
+        credits.setText("Credits");
 
-        return headerRow;
+        lp.weight = 15f;
+        TextView assessments = new TextView(this);
+        assessments.setLayoutParams(lp);
+        assessments.setText("OA/PA");
+
+        lp.weight = 15f;
+        TextView status = new TextView(this);
+        status.setLayoutParams(lp);
+        status.setText("Status");
+
+        TableRow header = new TableRow(this);
+        header.setLayoutParams(lp);
+        header.addView(title);
+        header.addView(dates);
+        header.addView(credits);
+        header.addView(assessments);
+        header.addView(status);
+        header.setBackgroundColor(ContextCompat.getColor(context, R.color.mustard));
+
+        return header;
     }
 
     @NonNull
-    private TableRow getTermRow(List<Course> reportCourses, Context context, TableRow.LayoutParams lp, Term currentTerm) {
+    private TableRow getTermRow(List<Course> reportCourses, TableRow.LayoutParams lp, Term currentTerm) {
         lp.weight = 30f;
         TextView tTitle = new TextView(this);
         tTitle.setLayoutParams(lp);
@@ -375,12 +392,13 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
         termRow.addView(tCredits);
         termRow.addView(tAssessments);
         termRow.addView(tStatus);
-        termRow.setBackgroundColor(getResources().getColor(R.color.teal_700));
+//        termRow.setBackgroundColor(ContextCompat.getColor(context, R.color.teal_700));
+        termRow.setBackgroundColor(ContextCompat.getColor(context, R.color.background));
         return termRow;
     }
 
     @NonNull
-    private TableRow getCourseRow(List<Assessment> reportAssessments, Context context, TableRow.LayoutParams lp, Course currentCourse) {
+    private TableRow getCourseRow(List<Assessment> reportAssessments, TableRow.LayoutParams lp, Course currentCourse) {
 
         lp.weight = 30f;
         TextView cTitle = new TextView(this);
@@ -434,12 +452,13 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
         courseRow.addView(cCredits);
         courseRow.addView(cAssessments);
         courseRow.addView(cStatus);
-        courseRow.setBackgroundColor(getResources().getColor(R.color.teal_200));
+        courseRow.setBackgroundColor(ContextCompat.getColor(context, R.color.teal_700));
+//        courseRow.setBackgroundColor(ContextCompat.getColor(context, R.color.orange));
         return courseRow;
     }
 
     @NonNull
-    private TableRow getNoCourseRow(TableRow.LayoutParams lp) {
+    private TableRow getNoCourseRow(Context context, TableRow.LayoutParams lp) {
         lp.weight = 30f;
         TextView cTitle = new TextView(this);
         cTitle.setLayoutParams(lp);
@@ -448,7 +467,8 @@ public class Reports extends AppCompatActivity implements AdapterView.OnItemSele
         TableRow courseRow = new TableRow(this);
         courseRow.setLayoutParams(lp);
         courseRow.addView(cTitle);
-        courseRow.setBackgroundColor(getResources().getColor(R.color.teal_200));
+        courseRow.setBackgroundColor(ContextCompat.getColor(context, R.color.teal_700));
+//        courseRow.setBackgroundColor(ContextCompat.getColor(context, R.color.orange));
         return courseRow;
     }
 

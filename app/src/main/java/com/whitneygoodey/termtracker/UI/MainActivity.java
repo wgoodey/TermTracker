@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     public static int numAlert;
     private Repository repository;
 
-    private final View.OnClickListener clicky = new View.OnClickListener() {
+    private final View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
@@ -62,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
                     signOut();
                     break;
                 case R.id.userTextView:
+                    loadTerms();
+                    break;
+                case R.id.enterArrow:
                     loadTerms();
                     break;
                 case R.id.deleteUserText:
@@ -96,15 +99,16 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         userTextView = findViewById(R.id.userTextView);
-        enterArrow = findViewById(R.id.enterImg);
+        enterArrow = findViewById(R.id.enterArrow);
         signInButton = findViewById(R.id.googleSignInButton);
         signOutButton = findViewById(R.id.signOutButton);
         deleteLink = findViewById(R.id.deleteUserText);
 
-        signInButton.setOnClickListener(clicky);
-        signOutButton.setOnClickListener(clicky);
-        userTextView.setOnClickListener(clicky);
-        deleteLink.setOnClickListener(clicky);
+        signInButton.setOnClickListener(clickListener);
+        signOutButton.setOnClickListener(clickListener);
+        userTextView.setOnClickListener(clickListener);
+        enterArrow.setOnClickListener(clickListener);
+        deleteLink.setOnClickListener(clickListener);
 
 
 
@@ -190,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            firebaseUser = firebaseAuth.getCurrentUser();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -253,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
                 validity = false;
             }
         } catch (Exception e) {
-            Toast.makeText(context, "Dates must be in the format mm/dd/yyyy.", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Dates are required.", Toast.LENGTH_LONG).show();
             validity = false;
         }
         return validity;
@@ -314,10 +318,11 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
-                // delete user
-                //TODO: re-authenticate user?
                 String deleteMessage = firebaseUser.getEmail() + " successfully deleted";
 
+                //TODO: re-authenticate user?
+
+                // delete user
                 firebaseUser.delete()
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

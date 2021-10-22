@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -150,14 +151,21 @@ public class AddCourse extends AppCompatActivity {
                 return true;
 
             case R.id.save:
-                String title = titleEdit.getText().toString();
-                String startDate = startEdit.getText().toString();
-                String endDate = endEdit.getText().toString();
-                if (MainActivity.isValid(getApplicationContext(), title, startDate, endDate)) {
-                    saveCourse();
-                    finish();
-                    return true;
+                try {
+                    int credits = Integer.parseInt(creditsEdit.getText().toString());
+                    String title = titleEdit.getText().toString();
+                    String startDate = startEdit.getText().toString();
+                    String endDate = endEdit.getText().toString();
+
+                    if (MainActivity.isValid(getApplicationContext(), title, startDate, endDate)) {
+                        saveCourse();
+                        finish();
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this,"Credit value is required.",Toast.LENGTH_LONG).show();
                 }
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

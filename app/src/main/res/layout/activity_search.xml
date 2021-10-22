@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
     tools:context=".UI.Search">
 
     <RadioGroup
@@ -17,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchOptions">
+        app:layout_constraintTop_toBottomOf="@+id/searchBar">
 
         <RadioButton
             android:id="@+id/radioTerms"
@@ -42,7 +41,7 @@
     </RadioGroup>
 
     <LinearLayout
-        android:id="@+id/searchOptions"
+        android:id="@+id/searchBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
