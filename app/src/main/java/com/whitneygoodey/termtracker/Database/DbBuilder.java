@@ -16,7 +16,7 @@ import com.whitneygoodey.termtracker.Entities.Term;
 import com.whitneygoodey.termtracker.Entities.User;
 
 @Database(
-        entities = {Term.class, Course.class, Assessment.class, User.class}, version = 3, exportSchema = false)
+        entities = {Term.class, Course.class, Assessment.class, User.class}, version = 4, exportSchema = false)
 public abstract class DbBuilder extends RoomDatabase {
 
     public abstract TermDao termDao();
@@ -31,7 +31,7 @@ public abstract class DbBuilder extends RoomDatabase {
             synchronized (DbBuilder.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(), DbBuilder.class, "TermTracker.db")
-                            .createFromAsset("defaultData.db")
+//                            .createFromAsset("defaultData.db")
                             //TODO: make sure there aren't any migration issues
                             .build();
                 }

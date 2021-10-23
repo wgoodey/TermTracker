@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                     if (found && userID == -1) {
-                        User newUser = new User(firebaseUser.getEmail(), "pass");
+                        User newUser = new User(firebaseUser.getEmail());
                         repository.insert(newUser);
                     }
                 } else {
@@ -206,15 +206,15 @@ public class MainActivity extends AppCompatActivity {
     private void setTempData(Repository repository) {
 
         //create temporary data
-        User admin = new User (1, "admin", "admin");
-        User testUser = new User (2, "wgoodey@wgu.edu", "test");
+        User admin = new User (1, "admin");
+        User testUser = new User (2, "wgoodey@wgu.edu");
 
-        Term term1 = new Term(1, "Term 1", "10/01/2021", "03/31/2022");
-        Term term2 = new Term(1, "Term 2", "04/01/2022", "09/30/2021");
-        Course course1 = new Course(1, 1,"Fundamentals of Woodworking", Course.Status.ENROLLED, 3,"04/01/2021", "05/23/2021", "Bob Vila", "bob@vila.com", "123-456-7890", "This is a long note that has no meaning other than to fill space in the view and hopefully demonstrate some wrapping.");
+        Term term1 = new Term(2, "Term 1", "10/01/2021", "03/31/2022");
+        Term term2 = new Term(2, "Term 2", "04/01/2022", "09/30/2021");
+        Course course1 = new Course(2, 1,"Fundamentals of Woodworking", Course.Status.ENROLLED, 3,"04/01/2021", "05/23/2021", "Bob Vila", "bob@vila.com", "123-456-7890", "This is a long note that has no meaning other than to fill space in the view and hopefully demonstrate some wrapping.");
         Course course2 = new Course(2, 2,"Fundamentals of Scuba", Course.Status.PLANNED, 5,"10/01/2022", "10/23/2022", "Jacques Cousteau", "jacques@cousteau.com", "123-456-7890", "This is a long note that has no meaning other than to fill space in the view and hopefully demonstrate some wrapping.");
-        Assessment assessment1 = new Assessment(1, 1, "Assessment 1", "10/23/2021", "10/23/2021", "Students will show competence in the basics of woodworking while demonstrating proper safety and technique.", Assessment.Type.PERFORMANCE);
-        Assessment assessment2 = new Assessment(1, 2, "Assessment 2", "10/23/2021", "10/23/2021", "Students will show competence in the basics of scuba diving while demonstrating proper safety and technique.", Assessment.Type.OBJECTIVE);
+        Assessment assessment1 = new Assessment(2, 1, "Assessment 1", "10/23/2021", "10/23/2021", "Students will show competence in the basics of woodworking while demonstrating proper safety and technique.", Assessment.Type.PERFORMANCE);
+        Assessment assessment2 = new Assessment(2, 2, "Assessment 2", "10/23/2021", "10/23/2021", "Students will show competence in the basics of scuba diving while demonstrating proper safety and technique.", Assessment.Type.OBJECTIVE);
 
         //insert temporary data
         repository.insert(testUser);

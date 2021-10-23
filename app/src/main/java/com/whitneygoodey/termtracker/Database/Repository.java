@@ -29,7 +29,6 @@ public class Repository {
     private static final int THREAD_COUNT = 4 ;
     static final ExecutorService databaseExecutor = Executors.newFixedThreadPool(THREAD_COUNT);
 
-    private Course tempCourse;
 
     public Repository(Application application) {
         DbBuilder db = DbBuilder.getDatabase(application);
@@ -48,7 +47,7 @@ public class Repository {
             databaseExecutor.execute( () -> allTerms = termDao.getUserTerms(ownerID));
         }
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -77,7 +76,7 @@ public class Repository {
     public void insert(Term term) {
         databaseExecutor.execute(() -> termDao.insert(term));
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -86,7 +85,7 @@ public class Repository {
     public void update(Term term) {
         databaseExecutor.execute( () -> termDao.update(term));
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -95,7 +94,7 @@ public class Repository {
     public void delete(Term term) {
         databaseExecutor.execute( () -> termDao.delete(term));
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -111,7 +110,7 @@ public class Repository {
             databaseExecutor.execute( () -> allCourses = courseDao.getUserCourses(ownerID));
         }
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -121,7 +120,7 @@ public class Repository {
     public List<Course> getTermCourses(int termID) {
         databaseExecutor.execute( () -> allCourses = courseDao.getTermCourses(termID));
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -140,7 +139,7 @@ public class Repository {
     public void insert(Course course) {
         databaseExecutor.execute( () -> courseDao.insert(course));
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -149,7 +148,7 @@ public class Repository {
     public void update(Course course) {
         databaseExecutor.execute( () -> courseDao.update(course));
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -158,7 +157,7 @@ public class Repository {
     public void delete(Course course) {
         databaseExecutor.execute( () -> courseDao.delete(course));
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -175,7 +174,7 @@ public class Repository {
         }
 
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -204,7 +203,7 @@ public class Repository {
     public void insert(Assessment assessment) {
         databaseExecutor.execute( () -> assessmentDao.insert(assessment));
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -213,7 +212,7 @@ public class Repository {
     public void update(Assessment assessment) {
         databaseExecutor.execute( () -> assessmentDao.update(assessment));
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -222,7 +221,7 @@ public class Repository {
     public void delete(Assessment assessment) {
         databaseExecutor.execute( () -> assessmentDao.delete(assessment));
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -234,7 +233,7 @@ public class Repository {
     public List<User> getAllUsers() {
         databaseExecutor.execute( () -> allUsers = userDao.getAllUsers());
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -244,7 +243,7 @@ public class Repository {
     public void insert(User user) {
         databaseExecutor.execute( () -> userDao.insert(user));
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -253,7 +252,7 @@ public class Repository {
     public void update(User user) {
         databaseExecutor.execute( () -> userDao.update(user));
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -262,11 +261,10 @@ public class Repository {
     public void delete(User user) {
         databaseExecutor.execute( () -> userDao.delete(user));
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
-
 
 }

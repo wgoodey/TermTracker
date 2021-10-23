@@ -10,18 +10,15 @@ public class User {
     @PrimaryKey(autoGenerate = true)
     int ID;
     private String email;
-    private String password;
 
     @Ignore
-    public User(int ID, String email, String password) {
+    public User(int ID, String email) {
         this.ID = ID;
         this.email = email;
-        this.password = password;
     }
 
-    public User(String email, String password) {
+    public User(String email) {
         this.email = email;
-        this.password = password;
     }
 
     @Override
@@ -29,7 +26,6 @@ public class User {
         return "User{" +
                 "ID='" + ID + '\'' +
                 "email='" + email + '\'' +
-                "Password='" + password + '\'' +
                 '}';
     }
 
@@ -41,19 +37,11 @@ public class User {
         return email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setID(int ID) {
         this.ID = ID;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }
