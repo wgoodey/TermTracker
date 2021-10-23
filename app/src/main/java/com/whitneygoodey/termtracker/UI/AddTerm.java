@@ -14,6 +14,7 @@ import com.whitneygoodey.termtracker.Entities.Term;
 import com.whitneygoodey.termtracker.R;
 
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
@@ -138,5 +139,24 @@ public class AddTerm extends AppCompatActivity {
         String myFormat = "MM/dd/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         editText.setText(sdf.format(myCalendar.getTime()));
+    }
+
+    public static boolean isValidTerm(String title, String start, String end) {
+        boolean validity = true;
+
+        try {
+            ZonedDateTime startDate = MainActivity.getZonedDateTime(start);
+            ZonedDateTime endDate = MainActivity.getZonedDateTime(end);
+
+            if (title.equals("") || start.equals("") || end.equals("")) {
+                validity = false;
+            } else if (endDate.isBefore(startDate)) {
+                validity = false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            validity = false;
+        }
+        return validity;
     }
 }
