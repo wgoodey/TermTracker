@@ -8,18 +8,19 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -51,15 +52,19 @@ public class MainActivity extends AppCompatActivity {
     public static int numAlert;
     private Repository repository;
 
+
+
     private final View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.googleSignInButton:
-                    signIn();
-                    break;
                 case R.id.signOutButton:
                     signOut();
+                    break;
+                case R.id.regularSignInbutton:
+                    String email = emailEdit.getText().toString().trim();
+                    String password = passwordEdit.getText().toString();
+                    signInWithEmailAndPassword(email, password);
                     break;
                 case R.id.userTextView:
                 case R.id.enterArrow:
@@ -67,6 +72,10 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.deleteUserText:
                     deleteUser();
+                    break;
+                case R.id.registerLink:
+                    Intent intent = new Intent(MainActivity.this, CreateAccount.class);
+                    startActivity(intent);
                     break;
             }
         }
@@ -80,9 +89,15 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView userTextView;
     private TextView deleteLink;
-    private SignInButton signInButton;
     private Button signOutButton;
+    private Button regularSignInButton;
     private ImageView enterArrow;
+
+    private EditText emailEdit;
+    private EditText passwordEdit;
+
+    private TextView create;
+    private ConstraintLayout signInControls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,22 +107,30 @@ public class MainActivity extends AppCompatActivity {
         repository = new Repository(getApplication());
 //        setTempData(repository);
 
-        List<User> userList = repository.getAllUsers();
+
 
         getSupportActionBar().hide();
 
+        signInControls = findViewById(R.id.signInControls);
+
         userTextView = findViewById(R.id.userTextView);
         enterArrow = findViewById(R.id.enterArrow);
-        signInButton = findViewById(R.id.googleSignInButton);
         signOutButton = findViewById(R.id.signOutButton);
         deleteLink = findViewById(R.id.deleteUserText);
+        regularSignInButton = findViewById(R.id.regularSignInbutton);
 
-        signInButton.setOnClickListener(clickListener);
         signOutButton.setOnClickListener(clickListener);
+        regularSignInButton.setOnClickListener(clickListener);
         userTextView.setOnClickListener(clickListener);
         enterArrow.setOnClickListener(clickListener);
         deleteLink.setOnClickListener(clickListener);
 
+        emailEdit = findViewById(R.id.emailEdit);
+        passwordEdit = findViewById(R.id.passwordEdit);
+
+
+        create = findViewById(R.id.registerLink);
+        create.setOnClickListener(clickListener);
 
 
         //initialize firebaseAuth and add authStateListener
@@ -115,22 +138,21 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
                 final FirebaseUser listenerUser = firebaseAuth.getCurrentUser();
                 if (listenerUser != null) {
                     firebaseUser = listenerUser;
+                    String email = firebaseUser.getEmail();
                     updateUI(firebaseUser);
                     boolean found = false;
-                    for (User user : userList) {
-                        if (firebaseUser.getEmail().equals(user.getEmail())) {
+                    for (User user : repository.getAllUsers()) {
+                        if (email.equals(user.getEmail())) {
                             found = true;
                             setCurrentUserID(user.getID());
                             break;
                         }
                     }
-                    if (found && userID == -1) {
-                        User newUser = new User(firebaseUser.getEmail());
-                        repository.insert(newUser);
-                    }
+
                 } else {
                     firebaseUser = null;
                     userID = -1;
@@ -205,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
 
         //create temporary data
         User admin = new User (1, "admin");
-        User testUser = new User (2, "wgoodey@wgu.edu");
+        User testUser = new User (2, "testing.fvc@gmail.com");
 
         Term term1 = new Term(2, "Term 1", "10/01/2021", "03/31/2022");
         Term term2 = new Term(2, "Term 2", "04/01/2022", "09/30/2021");
@@ -269,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
         userID = ID;
     }
 
-    private void signIn() {
+    private void signInWithGoogle() {
         Intent signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -286,18 +308,18 @@ public class MainActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         try {
             if (user == null) {
+                signInControls.setVisibility(View.VISIBLE);
                 userTextView.setText(getString(R.string.app_name));
-                signInButton.setVisibility(View.VISIBLE);
-                signOutButton.setVisibility(View.GONE);
+                signOutButton.setVisibility(View.INVISIBLE);
                 deleteLink.setVisibility(View.INVISIBLE);
                 enterArrow.setVisibility(View.GONE);
 
             } else {
                 userTextView.setText(user.getEmail());
-                signInButton.setVisibility(View.GONE);
+                enterArrow.setVisibility(View.VISIBLE);
+                signInControls.setVisibility(View.GONE);
                 signOutButton.setVisibility(View.VISIBLE);
                 deleteLink.setVisibility(View.VISIBLE);
-                enterArrow.setVisibility(View.VISIBLE);
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -373,5 +395,27 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void signInWithEmailAndPassword(String email, String password) {
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            firebaseUser = firebaseAuth.getCurrentUser();
+                            updateUI(firebaseUser);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+                    }
+                });
+    }
+
 
 }

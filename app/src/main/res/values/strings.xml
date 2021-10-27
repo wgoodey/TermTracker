@@ -62,6 +62,6 @@
     <string name="search">Search</string>
     <string name="reports">Reports</string>
     <string name="sign_out">Sign Out</string>
-    <string name="delete_user">Delete User</string>
+    <string name="delete_user">Delete Account</string>
     <string name="term_details">Term Details</string>
 </resources>
