@@ -62,8 +62,6 @@ public class MainActivity extends AppCompatActivity {
                     signOut();
                     break;
                 case R.id.userTextView:
-                    loadTerms();
-                    break;
                 case R.id.enterArrow:
                     loadTerms();
                     break;
@@ -349,7 +347,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog deleteDialog = builder.create();
         deleteDialog.show();
 
-
+        updateUI(firebaseUser);
 
     }
 
