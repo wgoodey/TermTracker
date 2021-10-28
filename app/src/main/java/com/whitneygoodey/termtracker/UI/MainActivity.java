@@ -62,9 +62,13 @@ public class MainActivity extends AppCompatActivity {
                     signOut();
                     break;
                 case R.id.regularSignInbutton:
-                    String email = emailEdit.getText().toString().trim();
-                    String password = passwordEdit.getText().toString();
-                    signInWithEmailAndPassword(email, password);
+                    try {
+                        String email = emailEdit.getText().toString().trim();
+                        String password = passwordEdit.getText().toString();
+                        signInWithEmailAndPassword(email, password);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case R.id.userTextView:
                 case R.id.enterArrow:
@@ -106,8 +110,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         repository = new Repository(getApplication());
 //        setTempData(repository);
-
-
 
         getSupportActionBar().hide();
 
@@ -320,6 +322,7 @@ public class MainActivity extends AppCompatActivity {
                 signInControls.setVisibility(View.GONE);
                 signOutButton.setVisibility(View.VISIBLE);
                 deleteLink.setVisibility(View.VISIBLE);
+                passwordEdit.setText("");
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -327,6 +330,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void deleteUser() {
+
+        if (userID == -1) {
+            updateUI(null);
+            return;
+        }
+
         int deleteKey = userID;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -340,8 +349,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 String deleteMessage = firebaseUser.getEmail() + " successfully deleted";
 
-                //TODO: re-authenticate user?
-
                 // delete user
                 firebaseUser.delete()
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -349,6 +356,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Log.d(TAG, "User account deleted.");
+                                    signOut();
                                     googleSignInClient.signOut();
                                     googleSignInClient.revokeAccess();
                                     //delete user's coursework
